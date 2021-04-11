@@ -14,7 +14,7 @@ class RandomNumber{
     RandomNumber(int seed); //set intial seed in constructor
     ~RandomNumber();
 
-    int getNum();
+    double getNum();
 
     boolean turnRightCar();
     boolean turnRightSUV();
