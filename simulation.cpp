@@ -47,8 +47,9 @@ int main(int argc, char* argv[])
     for(it=controls.begin(); it!=controls.end(); it++){
       cout<< it->first << ": " << it->second << endl;
     }
-
-
+    
+    //cout << controls["green_east_west:"] << endl;
+    
     //int max_simulated_time = values[0];
     //Animator anim(values[1]);
  }
