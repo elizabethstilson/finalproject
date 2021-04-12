@@ -10,6 +10,7 @@ class RandomNumber{
     mt19937 rng;
     uniform_real_distribution<double> randomNum(0.0, 1.0);
     //map<string, double> prob;
+    Dictionray prob();
 
     RandomNumber(int seed); //set intial seed in constructor
     ~RandomNumber();

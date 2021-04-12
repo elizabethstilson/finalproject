@@ -4,6 +4,8 @@
 #include <fstream>
 #include "Animator.h"
 #include "VehicleBase.h"
+//#include "Dictionary.h"
+#include "Dictionary.cpp"
 
 using namespace std;
 
@@ -20,7 +22,7 @@ int main(int argc, char* argv[])
     int initialSeed = atoi(argv[2]);
     
     //declaring the filename
-   // string filename = argv[1];
+    string filename = argv[1];
    
     //opening the file
     ifstream inputFile;
@@ -48,8 +50,13 @@ int main(int argc, char* argv[])
       cout<< it->first << ": " << it->second << endl;
     }
     
-    //cout << controls["green_east_west:"] << endl;
+    cout << controls["green_east_west:"] << endl;
     
+    Dictionary dict(filename);
+    cout << "testing Dictionary class" << endl;
+    cout << dict.getGreenEW() << endl;
+
+ 
     //int max_simulated_time = values[0];
     //Animator anim(values[1]);
  }
