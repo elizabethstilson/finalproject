@@ -6,6 +6,8 @@
 #include "VehicleBase.h"
 //#include "Dictionary.h"
 #include "Dictionary.cpp"
+//#include "RandomNumber.h"
+#include "RandomNumber.cpp"
 
 using namespace std;
 
@@ -56,7 +58,9 @@ int main(int argc, char* argv[])
     cout << "testing Dictionary class" << endl;
     cout << dict.getGreenEW() << endl;
 
- 
+    RandomNumber random(initialSeed, filename);
+    cout << "testing randomNumber" << endl;
+    cout << random.getVechile() << endl; 
     //int max_simulated_time = values[0];
     //Animator anim(values[1]);
  }

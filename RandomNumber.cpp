@@ -1,37 +1,104 @@
 #include "RandomNumber.h"
-#include "Dictionary.h"
+//#include "Dictionary.h"
+#include <string>
 
 using namespace std;
 
-RandomNumber::RandomNumber(int seed, Dictionary& dict) : intialSeed(seed){
-  rng.seed(intialSeed);
-  prob = dict; 
+RandomNumber::RandomNumber(int seed, string file) : initialSeed(seed){
+  //rng.seed(initialSeed);
+ // uniform_real_distribution<double> randomNum(0.0, 1.0);
+  //Dictionary prob(filename); 
+  filename = file;
 }
 
 RandomNumber::~RandomNumber() {}
 
-int RandomNumber::getNum(){
+double RandomNumber::getNum(){
+  rng.seed(initialSeed);
+  uniform_real_distribution<double> randomNum(0.0, 1.0);
   return randomNum(rng);
 }
 
-boolean RandomNumber::turnRightCar(){
-  return true;
+bool RandomNumber::turnRightCar(){
+  Dictionary prob(filename);
+  double x = this->getNum();
+  double car = prob.getPropRTCar();
+  double truck = prob.getPropRTTruck();
+  double suv = prob.getPropRTSUV();
+  if (x <= 1*car){
+    return true;
+  }
+  else{
+    return false; 
+  }  
 }
 
-boolean RandomNumber::turnRightSUV(){
-  return true;
+bool RandomNumber::turnRightSUV(){
+  Dictionary prob(filename);
+  double x = this->getNum();
+  double car = prob.getPropRTCar(); 
+  double suv = prob.getPropRTSUV(); 
+  if(1*car < x <= (1*car)+suv){  
+    return true;
+  }
+  else{
+    return false; 
+  }
 }
 
-boolean RandomNumber::turnRightTruck(){
-  return true;
+bool RandomNumber::turnRightTruck(){
+  Dictionary prob(filename);
+  double x = this->getNum();
+  double truck = prob.getPropRTTruck();
+  double car = prob.getPropRTCar();
+  double suv = prob.getPropRTSUV();
+  if((1*car)+suv < x < ((1*car)+suv)+truck){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 int RandomNumber::getVechile(){
-  return 0;
+  Dictionary prob(filename);
+  double propCar = prob.getPropCar();
+  double propTruck = prob.getPropTruck();
+  double propSuv = prob.getPropSUV(); 
+  double x = this->getNum();
+  if (x < 1*propCar){
+    return 0;   
+  }
+  else if (1*propCar < x < (1*propCar)+propSuv){
+    return 1;
+  }
+  else{
+    return 2;
+  }  
+ 
 }
 
 char RandomNumber::getBound(){
-  return 'c';
+  Dictionary prob(filename);
+  double x = this->getNum();
+  double eb = prob.getProbVechEB();
+  double nb = prob.getProbVechNB();
+  double sb = prob.getProbVechSB();
+  double wb = prob.getProbVechWB(); 
+
+  if(x <= 1*eb){
+    return 'e';
+  }
+  else if(1*eb < x <= (1*eb)+nb){
+    return 'n';
+  }
+  else if((1*eb+nb) < x <= (1*eb+nb)+sb){
+    return 's';
+  }
+  else if((1*eb+nb)+sb < x <= (1*eb+nb+sb)+wb){
+    return 'w';
+  }
+  else{
+   return 'x';
+  }
 }
-//generate a random number than create boundaries with the probablities from the 
-//dictionary. then compare and the random number with the boundaries 
