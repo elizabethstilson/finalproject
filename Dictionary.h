@@ -1,3 +1,6 @@
+#ifndef __DICTIONARY_H__
+#define __DICTIONARY_H__
+
 #include <iostream>
 #include <string>
 #include <map>
@@ -34,5 +37,6 @@ class Dictionary{
 
 
 
-
 };
+
+#endif

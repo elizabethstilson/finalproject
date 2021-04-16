@@ -1,5 +1,5 @@
 #include "RandomNumber.h"
-//#include "Dictionary.h"
+#include "Dictionary.h"
 #include <string>
 
 using namespace std;

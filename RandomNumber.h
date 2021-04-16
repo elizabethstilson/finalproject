@@ -1,6 +1,8 @@
+#ifndef __RANDOMNUMBER_H__
+#define __RANDOMNUMBER_H__
+
 #include <iostream>
 #include <random>
-//#include "Dictionary.h"
 using namespace std;
 
 class RandomNumber{
@@ -27,3 +29,5 @@ class RandomNumber{
     //0-0.25 = nb, 0.26 - 0.35 = eb, 0.36 - 0.50 = wb, 0.51 - 0.65 = sb, 0.66+ none
 
 };
+
+#endif
