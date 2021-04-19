@@ -2,14 +2,15 @@
 #include <fstream>
 #include "Dictionary.h"
 
+//dictionary class 
+//main purpose is to create a dictionary with all the information from the input file and then have get methods so that other classes can access them
 
+//constructor: need a string, which is the name of the inputfile
 Dictionary::Dictionary(string file){
   
    fileName = file;
    ifstream inputFile(fileName);
 
-   //creating a map/dictionary
-  // map<string, double> cfontrols;
 
    string name;
    double value;
@@ -21,12 +22,9 @@ Dictionary::Dictionary(string file){
    //closing input file
    inputFile.close();
 
-   //assigning values in the dictionary
-   //for(int x = 0; x <= values.size(); x++){
-     //prob[names[x]] = values[x];
-    // cout << values[x] << endl;}
 }
 
+//destructor 
 Dictionary::~Dictionary(){}
 
 double Dictionary::getMaxSimTime(){
