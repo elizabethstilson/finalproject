@@ -5,19 +5,19 @@
 
 int VehicleBase::vehicleCount = 0;
 
-VehicleBase::VehicleBase(VehicleType type, Direction direction, Turn turn)
-    : vehicleID(VehicleBase::vehicleCount++), 
+VehicleBase::VehicleBase(VehicleType type, Direction direction, bool turningStatus)
+    : vehicleID(VehicleBase::vehicleCount++),
       vehicleType(type),
       vehicleDirection(direction),
-      vehicleTurn(turn)
+      isTurning(turningStatus)
 {}
 
 VehicleBase::VehicleBase(const VehicleBase& other)
     : vehicleID(other.vehicleID),
       vehicleType(other.vehicleType),
       vehicleDirection(other.vehicleDirection),
-      vehicleTurn(other.vehicleTurn)
-      
+      isTurning(other.isTurning)
+
 {}
 
 VehicleBase::~VehicleBase() {}
