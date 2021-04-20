@@ -14,12 +14,14 @@ class Section{
     bool occupied;
     VehicleType vehicleType;
     Direction sectionDirection;
+    bool turnStatus;
 
   public:
     Section();
     ~Section();
 
     bool isOccupied();
+    bool getTurningStatus();
     VehicleType getVehicleType();
     Direction getSectionDirection();
     void unoccupy();
