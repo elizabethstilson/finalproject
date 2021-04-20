@@ -78,10 +78,63 @@ void Lane::moveLane(LightColor light, Lane turnLane){
     }
   }
 
-  // Elizabeth to do
+  // Three separate while loops - for cars that are beyond intersection, in intersection, and before intersection
   if(light == yellow){
+      
 
-  }
+      int i = numsections;
+
+      //this while loop is for the cars that are already passed the intersection
+      //when the light is yellow, so they just keep moving. Tests whether turning or not
+      while(i > halfsize){
+
+      if(i = intersection && lane[i].getTurningStatus){
+        turnRight(lane[i], turnLane);
+      }
+
+      else{
+        lane[i]= lane[i-1];
+        i =i-1;
+      }
+
+      }
+      lane[halfsize].unoccupy();
+
+    if(lane[halfsize].isOccupied() ||  || lane[halfsize+2].isOccupied()){
+      VehicleType interVehicleType = lane[halfSize].getvehicleType();
+
+      if(interVehicleType == car && lane[halfsize] == lane[halfsize+1]){
+        lane[halfsize-1].unoccupy();
+      }
+      else if(interVehicleType == SUV && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2]){
+        lane[halfsize-1].unoccupy();
+      }
+        else if(interVehicleType == truck && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2] == lane[halfsize+3]){
+        lane[halfsize-1].unoccupy();
+      }
+    }
+    if(lane[halfsize-1].isOccupied()){
+      VehicleType beforeinterVehicleType = lane[halfSize-1].getvehicleType();
+      if(interVehicleType == car && lane[halfsize-1] == lane[halfsize]){
+        lane[halfsize-2].unoccupy();
+      }
+      else if(interVehicleType == SUV && lane[halfsize-1] == lane[halfsize] == lane[halfsize+1]){
+        lane[halfsize-2].unoccupy();
+      }
+    //truck must stop
+  //      else if(interVehicleType == truck && lane[halfsize] == lane[halfsize] == lane[halfsize+1] == lane[halfsize+2]){
+//        lane[halfsize-2].unoccupy();
+      }
+      if(lane[halfsize-2].isOccupied()){
+        VehicleType beforeinterVehicleType = lane[halfSize-2].getvehicleType();
+        if(interVehicleType == car && lane[halfsize-2] == lane[halfsize-1]){
+          lane[halfsize-3].unoccupy();
+        }
+      //SUV must stop
+      //  else if(interVehicleType == SUV && lane[halfsize-1] == lane[halfsize] == lane[halfsize+1]){
+    //      lane[halfsize-2].unoccupy();
+        }
+    }
 
   // Red light
   else{
