@@ -12,7 +12,7 @@ class Section{
   private:
 
     bool occupied;
-    int vehicleID;
+    VehicleType vehicleType;
     Direction sectionDirection;
 
   public:
@@ -20,8 +20,9 @@ class Section{
     ~Section();
 
     bool isOccupied();
-    int getVehicleID();
+    VehicleType getVehicleType();
     Direction getSectionDirection();
+    void unoccupy();
     void makeOccupied(VehicleBase vehicleX, Direction direction);
 
 };
