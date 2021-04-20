@@ -3,8 +3,12 @@
 
 #include "Lane.h"
 
-Lane::Lane(int numSections, Direction direction){
+// Sets up a lane based on its size and direction
+Lane::Lane(int halfsize, Direction direction){
+  this->numSectionsBeforeIntersection = halfsize;
   Section newSection;
+  this->numSections = halfsize*2 +2;
+  lane(numSections, nullptr);
   for(int i =0; i < numSections; i++){
     newSection = new Section();
     lane.pushback(newSection);
@@ -40,20 +44,29 @@ void Lane::assignVehicle(VehicleBase vehicle){
 
 }
 
-void Lane::moveLane(LightColor light){
+void Lane::moveLane(LightColor light, Lane turnLane){
+  int intersection = halfsize;
+  // Green light moveLane
   if(light == green){
-    
+
     int i = numSections;
-    
+
     while(i > 0){
-      
-      lane[i]= lane[i-1];
-      i -= 1;
-      
+
+      // If a vehicle is at the intersection and is set to turn
+      if(i = intersection && lane[i].getTurningStatus){
+        turnRight(lane[i], turnLane);
+      }
+      // Moves the other vehicles forward
+      else{
+        lane[i]= lane[i-1];
+        i -= 1;
+      }
+
     }
     VehicleType firstVehicleType = lane[1].getVehicleType();
 
-    //Because the sections are copied last to first, the first section 
+    // Because the sections are copied last to first, the first section
     // needs to either be changed to no vehicle or be a part of the vehicles
     // in the section(s) in front of it if only part of the car is in the lane
     if(firstVehicleType == car && lane[1] == lane[2]){
@@ -64,8 +77,44 @@ void Lane::moveLane(LightColor light){
       lane[0].unoccupy();
     }
   }
+
+  // Elizabeth to do
+  if(light == yellow){
+
+  }
+
+  // Red light
+  else{
+    int i = numSections;
+
+    while(i > halfsize){
+
+      lane[i]= lane[i-1];
+      i -= 1;
+
+    }
+    lane[halfsize].unoccupy();
+
+    // THIS ALL DEPENDS ON YELLOW LIGHT RULES, MAY NOT HAVE TO WORRY ABOUT PARTIAL
+    // CARS
+    //if(lane[halfsize].isOccupied()){
+      //VehicleType interVehicleType = lane[halfSize].getVehicleType();
+
+      // Because the sections are copied last to first, the first section
+      // needs to either be changed to no vehicle or be a part of the vehicles
+      // in the section(s) in front of it if only part of the car is in the lane
+      //if(interVehicleType == car && lane[halfsize] == lane[halfsize+1]){
+        //lane[halfsize-1].unoccupy();
+      //} else if(interVehicleType == SUV && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2]){
+        //lane[halfsize-1].unoccupy();
+      //} else if(interVehicleType == truck && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2] == lane[halfsize+3]){
+        //lane[halfsize-1].unoccupy();
+      //}
+    //}
+  }
 }
 
-void Lane::turnRight(VehicleBase vehicle, Lane turnLane){
+void Lane::turnRight(Section turningSection, Lane turnLane){
+  turnLane[halfsize+2] = turningSection;
 
 }
