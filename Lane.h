@@ -8,6 +8,7 @@
 class Lane{
   private:
     double numSections;
+    double numSectionsBeforeIntersection;
     Direction laneDirection;
 
   public:
@@ -15,9 +16,8 @@ class Lane{
     Lane(int halfsize, Direction direction);
     ~Lane();
     void assignVehicle(VehicleBase vehicle);
-    void moveLane(LightColor light);
-    void turnRight(VehicleBase vehicle, Lane turnLane);
+    void moveLane(LightColor light, Lane turnLane);
+    void turnRight(Section turningSection, Lane turnLane);
 
 
 }
-
