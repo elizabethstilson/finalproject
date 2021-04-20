@@ -40,8 +40,30 @@ void Lane::assignVehicle(VehicleBase vehicle){
 
 }
 
-void Lane::moveLane(){
+void Lane::moveLane(LightColor light){
+  if(light == green){
+    
+    int i = numSections;
+    
+    while(i > 0){
+      
+      lane[i]= lane[i-1];
+      i -= 1;
+      
+    }
+    VehicleType firstVehicleType = lane[1].getVehicleType();
 
+    //Because the sections are copied last to first, the first section 
+    // needs to either be changed to no vehicle or be a part of the vehicles
+    // in the section(s) in front of it if only part of the car is in the lane
+    if(firstVehicleType == car && lane[1] == lane[2]){
+      lane[0].unoccupy();
+    } else if(firstVehicleType == SUV && lane[1] == lane[2] == lane[3]){
+      lane[0].unoccupy();
+    } else if(firstVehicleType == truck && lane[1] == lane[2] == lane[3] == lane[4]){
+      lane[0].unoccupy();
+    }
+  }
 }
 
 void Lane::turnRight(VehicleBase vehicle, Lane turnLane){
