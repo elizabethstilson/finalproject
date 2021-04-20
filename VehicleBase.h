@@ -1,33 +1,25 @@
-#ifndef __VEHICLE_BASE_H__
-#define __VEHICLE_BASE_H__
+#ifndef __VEHICLE_BASE_CPP__
+#define __VEHICLE_BASE_CPP__
 
-// enum: see http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum
-enum class Direction   {north, south, east, west};
-enum class VehicleType {car, suv, truck};
-enum class LightColor  {green, yellow, red};
-enum class Turn {right};
+#include "VehicleBase.h"
 
-class VehicleBase
-{
-   public:
-      static int vehicleCount;
+int VehicleBase::vehicleCount = 0;
 
-   private:
-      int         vehicleID;
-      VehicleType vehicleType;
-      Direction   vehicleDirection;
-      Turn vehicleTurn;
+VehicleBase::VehicleBase(VehicleType type, Direction direction, bool turningStatus)
+    : vehicleID(VehicleBase::vehicleCount++),
+      vehicleType(type),
+      vehicleDirection(direction),
+      isTurning(turningStatus)
+{}
 
-   public:
-      VehicleBase(VehicleType type, Direction originalDirection);
-      VehicleBase(const VehicleBase& other);
-      ~VehicleBase();
+VehicleBase::VehicleBase(const VehicleBase& other)
+    : vehicleID(other.vehicleID),
+      vehicleType(other.vehicleType),
+      vehicleDirection(other.vehicleDirection),
+      isTurning(other.isTurning)
 
-      inline int getVehicleID() const { return this->vehicleID; }
+{}
 
-      inline VehicleType getVehicleType() const { return this->vehicleType; }
-      inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
-      inline Turn getVehicleTurn() const {return this -> vehicleTurn;}
-};
+VehicleBase::~VehicleBase() {}
 
 #endif
