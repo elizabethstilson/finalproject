@@ -5,6 +5,7 @@
 enum class Direction   {north, south, east, west};
 enum class VehicleType {car, suv, truck};
 enum class LightColor  {green, yellow, red};
+enum class Turn {right};
 
 class VehicleBase
 {
@@ -15,6 +16,7 @@ class VehicleBase
       int         vehicleID;
       VehicleType vehicleType;
       Direction   vehicleDirection;
+      Turn vehicleTurn;
 
    public:
       VehicleBase(VehicleType type, Direction originalDirection);
@@ -25,6 +27,7 @@ class VehicleBase
 
       inline VehicleType getVehicleType() const { return this->vehicleType; }
       inline Direction   getVehicleOriginalDirection() const { return this->vehicleDirection; }
+      inline Turn getVehicleTurn() const {return this -> vehicleTurn;}
 };
 
 #endif
