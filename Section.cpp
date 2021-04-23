@@ -15,6 +15,7 @@ void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
   this->vehicleID = vehicleX.getVehicleID();
   this->sectionDirection = direction;
   this->turnStatus = vehicleX.getTurningStatus();
+  this->vehicle = vehicleX;
 }
 
 
