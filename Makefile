@@ -1,18 +1,33 @@
-EXECS = testAnimator
-OBJS = testAnimator.o Animator.o VehicleBase.o
+EXECS = simulation
+OBJS = simulation.o Animator.o Dictionary.o VehicleBase.o Lane.o RandomNumber.o Section.o
 
 #### use next two lines for Mac
-#CC = clang++
-#CCFLAGS = -std=c++11 -stdlib=libc++
+# CC = clang++
+# CCFLAGS = -std=c++11 -stdlib=libc++
 
 #### use next two lines for mathcs* machines:
 CC = g++
-CCFLAGS = -std=c++11
+CCFLAGS = -std=c++17 -g -Wall
 
 all: $(EXECS)
 
-testAnimator: $(OBJS)
+simulation: $(OBJS)
 	$(CC) $(CCFLAGS) $^ -o $@
+
+Lane.o: Lane.cpp VehicleBase.cpp Section.cpp *.h
+	$(CC) $(CCFLAGS) -c Lane.cpp VehicleBase.cpp Section.cpp
+
+Section.o: Section.cpp VehicleBase.cpp *.h
+		$(CC) $(CCFLAGS) -c Section.cpp VehicleBase.cpp
+
+VehicleBase.o: VehicleBase.cpp *.h
+		$(CC) $(CCFLAGS) -c VehicleBase.cpp
+
+Dictionary.o: Dictionary.cpp *.h
+		$(CC) $(CCFLAGS) -c Dictionary.cpp
+
+Animator.o: Animator.cpp VehicleBase.cpp Lane.cpp *.h
+		$(CC) $(CCFLAGS) -c Animator.cpp VehicleBase.cpp Lane.cpp
 
 %.o: %.cpp *.h
 	$(CC) $(CCFLAGS) -c $<
