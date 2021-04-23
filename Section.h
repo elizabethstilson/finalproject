@@ -15,6 +15,7 @@ class Section{
     VehicleType vehicleType;
     Direction sectionDirection;
     bool turnStatus;
+    int vehicleID;
 
   public:
     Section();
@@ -24,6 +25,7 @@ class Section{
     bool getTurningStatus();
     VehicleType getVehicleType();
     Direction getSectionDirection();
+    int getVehicleID();
     void unoccupy();
     void makeOccupied(VehicleBase vehicleX, Direction direction);
 

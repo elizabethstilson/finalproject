@@ -15,7 +15,7 @@ Lane::Lane(int halfsize, Direction direction){
   this->laneDirection = direction;
 }
 
-Lane::~Lane();
+Lane::~Lane(){};
 
 // Have a new vehicle enter the lane
 void Lane::assignVehicle(VehicleBase vehicle){
@@ -70,9 +70,9 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
     // in the section(s) in front of it if only part of the VehicleType::car is in the lane
     if(firstVehicleType == VehicleType::car && lane[1] == lane[2]){
       lane[0]->unoccupy();
-    } else if(firstVehicleType == VehicleType::suv && lane[1] == lane[2] == lane[3]){
+    } else if((firstVehicleType == VehicleType::suv) && (lane[1] == lane[2]) && (lane[2] == lane[3])){
       lane[0]->unoccupy();
-    } else if(firstVehicleType == VehicleType::truck && lane[1] == lane[2] == lane[3] == lane[4]){
+    } else if(firstVehicleType == VehicleType::truck && (lane[1] == lane[2]) && (lane[2] == lane [3]) && (lane[3] == lane[4])){
       lane[0]->unoccupy();
     }
   }
@@ -100,16 +100,16 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
        }
        lane[halfsize]->unoccupy();
 
-     if(lane[halfsize]->isOccupied() ||  || lane[halfsize+2]->isOccupied()){
+     if(lane[halfsize]->isOccupied() || lane[halfsize+2]->isOccupied()){
        VehicleType beforeInterVehicleType = lane[halfsize]->getVehicleType();
 
        if(beforeInterVehicleType == VehicleType::car && lane[halfsize] == lane[halfsize+1]){
          lane[halfsize-1]->unoccupy();
        }
-       else if(beforeInterVehicleType == VehicleType::suv && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2]){
+       else if((beforeInterVehicleType == VehicleType::suv) && (lane[halfsize] == lane[halfsize+1]) && (lane[halfsize+1] == lane[halfsize+2])){
          lane[halfsize-1]->unoccupy();
        }
-         else if(beforeInterVehicleType == VehicleType::truck && lane[halfsize] == lane[halfsize+1] == lane[halfsize+2] == lane[halfsize+3]){
+         else if(beforeInterVehicleType == VehicleType::truck && (lane[halfsize] == lane[halfsize+1]) && (lane[halfsize+1] == lane[halfsize+2]) && (lane[halfsize+2] == lane[halfsize+3])){
          lane[halfsize-1]->unoccupy();
        }
      }
@@ -118,7 +118,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
        if(beforeInterVehicleType == VehicleType::car && lane[halfsize-1] == lane[halfsize]){
          lane[halfsize-2]->unoccupy();
        }
-       else if(beforeInterVehicleType == VehicleType::suv && lane[halfsize-1] == lane[halfsize] == lane[halfsize+1]){
+       else if(beforeInterVehicleType == VehicleType::suv && (lane[halfsize-1] == lane[halfsize]) && (lane[halfsize] == lane[halfsize+1])){
          lane[halfsize-2]->unoccupy();
        }
      //VehicleType::truck must stop
@@ -169,7 +169,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
 }
 
 void Lane::turnRight(Section* turningSection, Lane* turnLane){
-  turnLane[this->halfsize+2] = turningSection;
+  turnLane->lane[this->halfsize+2] = turningSection;
 
 }
 
