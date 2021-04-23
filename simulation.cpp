@@ -6,7 +6,8 @@
 //#include "VehicleBase.h"
 #include "Dictionary.h"
 #include "RandomNumber.h"
-//#include "Lane.h"
+#include "Lane.h"
+#include "Section.h"
 
 ///using namespace std;
 
