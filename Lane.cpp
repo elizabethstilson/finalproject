@@ -53,7 +53,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
     while(i > 0){
 
       // If a vehicle is at the intersection and is set to turn
-      if(i = intersection && lane[i]->getTurningStatus()){
+      if((i = intersection) && (lane[i]->getTurningStatus())){
         turnRight(lane[i], turnLane);
       }
       // Moves the other vehicles forward
@@ -88,7 +88,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
        //when the light is LightColor::yellow, so they just keep moving. Tests whether turning or not
        while(i > halfsize){
 
-       if(i = intersection && lane[i]->getTurningStatus()){
+       if((i = intersection) && (lane[i]->getTurningStatus())){
          turnRight(lane[i], turnLane);
        }
 
