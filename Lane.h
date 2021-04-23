@@ -7,17 +7,18 @@
 
 class Lane{
   private:
-    double numSections;
-    double numSectionsBeforeIntersection;
+    int numSections;
+    int halfsize;
     Direction laneDirection;
 
   public:
-    vector<Section> lane;
+    std::vector<Section*> lane;
     Lane(int halfsize, Direction direction);
     ~Lane();
     void assignVehicle(VehicleBase vehicle);
-    void moveLane(LightColor light, Lane turnLane);
-    void turnRight(Section turningSection, Lane turnLane);
+    void moveLane(LightColor light, Lane* turnLane);
+    void turnRight(Section* turningSection, Lane* turnLane);
+    std::vector<Section*> getLaneVector();
 
 
-}
+};
