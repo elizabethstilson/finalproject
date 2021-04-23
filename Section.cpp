@@ -9,6 +9,15 @@ Section::Section(){
 
 Section::~Section(){}
 
+void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
+  this->occupied = true;
+  this->vehicleType = vehicleX.getVehicleType();
+  this->vehicleID = vehicleX.getVehicleID();
+  this->sectionDirection = direction;
+  this->turnStatus = vehicleX.getTurningStatus();
+}
+
+
 bool Section::isOccupied(){
   return this->occupied;
 }
@@ -17,7 +26,7 @@ bool Section::getTurningStatus(){
   return this->turnStatus;
 }
 
-int Section::getVehicleType(){
+VehicleType Section::getVehicleType(){
   return this->vehicleType;
 }
 
@@ -25,15 +34,13 @@ Direction Section::getSectionDirection(){
   return this->sectionDirection;
 }
 
+int Section::getVehicleID(){
+  return this->vehicleID;
+}
+
 void Section::unoccupy(){
   occupied = false;
 }
 
-void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
-  this->vehicleType = vehicleX.getVehicleType();
-  this->sectionDirection = direction;
-  this->occupied = true;
-  this->turnStatus = vehicleX.getTurningStatus();
-}
 
 #endif
