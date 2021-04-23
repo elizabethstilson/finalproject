@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Animator.h"
-#include "VehicleBase.h"
+#include "Lane.h"
+#include "Dictionary.h"
 
 int main()
 {
@@ -13,7 +14,7 @@ int main()
     Animator anim(halfSize);
 
     // construct vectors of VehicleBase* of appropriate size, init to nullptr
-    std::vector<VehicleBase*> westbound(halfSize * 2 + 2, nullptr);
+    std::vector<VehicleBase*> westbound(halfSize * 2 + 2, nullptr); // change to match lane class
     std::vector<VehicleBase*> eastbound(halfSize * 2 + 2, nullptr);
     std::vector<VehicleBase*> southbound(halfSize * 2 + 2, nullptr);
     std::vector<VehicleBase*> northbound(halfSize * 2 + 2, nullptr);
@@ -39,28 +40,32 @@ int main()
     int i = 0;
     int j = 0;
 
+    // put in simulation
     anim.setLightNorthSouth(LightColor::red);
     anim.setLightEastWest(LightColor::green);
 
+    // automatically increments
+    // handles the vehicle
     for (; i < 4; i++)
     {
-        eastbound[10+i] = eastbound[11+i] = &vb1;
-        eastbound[6+i] = eastbound[7+i] = eastbound[8+i] = &vb2;
-        eastbound[0+i] = eastbound[1+i] = eastbound[2+i] = eastbound[3+i] = &vb3;
+        //eastbound[10+i] = eastbound[11+i] = &vb1;
+        //eastbound[6+i] = eastbound[7+i] = eastbound[8+i] = &vb2;
+        //eastbound[0+i] = eastbound[1+i] = eastbound[2+i] = eastbound[3+i] = &vb3;
 
-        westbound[9+i] = westbound[10+i] = &vb4;
-        westbound[6+i] = westbound[7+i] = westbound[8+i] = &vb5;
-        westbound[0+i] = westbound[1+i] = westbound[2+i] = westbound[3+i] = &vb6;
+        //westbound[9+i] = westbound[10+i] = &vb4;
+        //westbound[6+i] = westbound[7+i] = westbound[8+i] = &vb5;
+        //westbound[0+i] = westbound[1+i] = westbound[2+i] = westbound[3+i] = &vb6;
 
-        southbound[12+j] = southbound[13+j] = &vb7;
-        southbound[5+j] = southbound[6+j] = southbound[7+j] = &vb8;
-        southbound[0+j] = southbound[1+j] = southbound[2+j] = southbound[3+j] = &vb9;
+        //southbound[12+j] = southbound[13+j] = &vb7;
+        //southbound[5+j] = southbound[6+j] = southbound[7+j] = &vb8;
+        //southbound[0+j] = southbound[1+j] = southbound[2+j] = southbound[3+j] = &vb9;
 
-        northbound[12+j] = northbound[13+j] = &vb10;
-        northbound[5+j] = northbound[6+j] = northbound[7+j] = &vb11;
+        //northbound[12+j] = northbound[13+j] = &vb10;
+        //northbound[5+j] = northbound[6+j] = northbound[7+j] = &vb11;
 //        northbound[0+j] = northbound[1+j] = northbound[2+j] = northbound[3+j] = &vb12;
-        northbound[0+j] = northbound[1+j] = northbound[2+j] = northbound[3+j] = &vb13;
+        //northbound[0+j] = northbound[1+j] = northbound[2+j] = northbound[3+j] = &vb13;
 
+        // include in simulation, change method in animator to fit lane
         anim.setVehiclesNorthbound(northbound);
         anim.setVehiclesWestbound(westbound);
         anim.setVehiclesSouthbound(southbound);
