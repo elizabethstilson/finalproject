@@ -11,8 +11,9 @@
 class Section{
   private:
 
-    bool occupied;
+    bool occupied = false;
     VehicleType vehicleType;
+    VehicleBase vehicle;
     Direction sectionDirection;
     bool turnStatus;
     int vehicleID;
