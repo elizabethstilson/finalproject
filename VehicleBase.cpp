@@ -5,6 +5,8 @@
 
 int VehicleBase::vehicleCount = 0;
 
+VehicleBase::VehicleBase(){}
+
 VehicleBase::VehicleBase(VehicleType type, Direction direction, bool turningStatus)
     : vehicleID(VehicleBase::vehicleCount++),
       vehicleType(type),

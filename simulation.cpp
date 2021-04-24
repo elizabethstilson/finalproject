@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
     Lane southbound(halfSize, Direction::south);
     Lane northbound(halfSize, Direction::north);
 
-    VehicleBase vehicleA(VehicleType::car, Direction::east, false);
-    eastbound.assignVehicle(vehicleA);
+    //VehicleBase vehicleA(VehicleType::car, Direction::east, false);
+   // eastbound.assignVehicle(vehicleA);
     //variable to control drawing everything
     char space;
 
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
         if(currentTime >= 28){
           break;
         }
-	      else{
+	 else{
           anim.setLightNorthSouth(LightColor::green);
           anim.setLightEastWest(LightColor::red);
           anim.setVehiclesNorthbound(northbound.getLaneVector());

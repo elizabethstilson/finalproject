@@ -20,7 +20,7 @@ void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
 
 
 bool Section::isOccupied(){
-  return this->occupied;
+  return occupied;
 }
 
 bool Section::getTurningStatus(){

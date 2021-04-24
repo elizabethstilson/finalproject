@@ -18,6 +18,7 @@ class VehicleBase
       bool isTurning; // true is turning, false is not turning
 
    public:
+      VehicleBase();
       VehicleBase(VehicleType type, Direction originalDirection, bool turningStatus);
       VehicleBase(const VehicleBase& other);
       ~VehicleBase();
