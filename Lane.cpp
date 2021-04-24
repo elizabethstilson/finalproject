@@ -35,7 +35,7 @@ void Lane::assignVehicle(VehicleBase vehicle){
     // add as many parts of the VehicleType::car to the lane, if the lane is full, no VehicleType::car
     // can be added
     if(lane.at(i)->isOccupied() == false){
-        lane.at(i)->makeOccupied(vehicle, vehicle.getVehicleOriginalDirection());
+       // lane.at(i)->makeOccupied(vehicle, vehicle.getVehicleOriginalDirection());
     }
 
   }

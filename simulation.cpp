@@ -58,8 +58,8 @@ int main(int argc, char* argv[])
     Lane southbound(halfSize, Direction::south);
     Lane northbound(halfSize, Direction::north);
 
-    //VehicleBase vehicleA(VehicleType::car, Direction::east, false);
-   // eastbound.assignVehicle(vehicleA);
+    VehicleBase vehicleA(VehicleType::car, Direction::east, false);
+    eastbound.assignVehicle(vehicleA);
     //variable to control drawing everything
     char space;
 

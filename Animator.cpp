@@ -204,7 +204,7 @@ void Animator::drawNorthPortion(int time)
                 << northToSouth[s]->getVehicleID()
                << Animator::COLOR_RESET;
 
-        //std::cout << Animator::SECTION_BOUNDARY_NS;
+        std::cout << Animator::SECTION_BOUNDARY_NS;
 
         // either draw (a portion of) northbound vehicle if present,
         // or an empty section
