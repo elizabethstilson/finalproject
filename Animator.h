@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "VehicleBase.h"
-
+#include "Section.h"
 //==========================================================================
 //* class Animator
 //* Author: Barry Lawson
@@ -107,14 +107,14 @@ class Animator
             { northSouthLightColor = color; }
       inline void setLightEastWest(LightColor color)
             { eastWestLightColor = color; }
-
-      inline void setVehiclesNorthbound(std::vector<VehicleBase*> vehicles)
+    
+      inline void setVehiclesNorthbound(std::vector<Section*> vehicles)
             { southToNorth = vehicles;  vehiclesAreSet[0] = true; }
-      inline void setVehiclesWestbound(std::vector<VehicleBase*> vehicles)
+      inline void setVehiclesWestbound(std::vector<Section*> vehicles)
             { eastToWest   = vehicles;  vehiclesAreSet[1] = true; }
-      inline void setVehiclesSouthbound(std::vector<VehicleBase*> vehicles)
+      inline void setVehiclesSouthbound(std::vector<Section*> vehicles)
             { northToSouth = vehicles;  vehiclesAreSet[2] = true; }
-      inline void setVehiclesEastbound(std::vector<VehicleBase*> vehicles)
+      inline void setVehiclesEastbound(std::vector<Section*> vehicles)
             { westToEast   = vehicles;  vehiclesAreSet[3] = true; }
 
 
