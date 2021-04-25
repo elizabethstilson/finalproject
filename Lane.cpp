@@ -88,8 +88,8 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
 
   // Elizabeth to do
   // Three separate while loops - for VehicleType::cars that are beyond intersection, in intersection, and before intersection
-   else if(light == LightColor::yellow){
-       std::cout << "in yellow light" << std::endl; 
+    else if(light == LightColor::yellow){
+       std::cout << "in yellow light" << std::endl;
 
        int i = numSections;
 
@@ -103,13 +103,12 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
 
        else{
          lane[i]= lane[i-1];
-         i =i-1;
+         i = i-1;
        }
-
        }
-       lane[halfsize]->unoccupy();
-
-     if(lane[halfsize]->isOccupied() || lane[halfsize+2]->isOccupied()){
+       //lane[halfsize]->unoccupy();
+       //if the vehicle is in the intersection, have it go forward.
+     if(lane[halfsize]->isOccupied() || lane[halfsize+1]->isOccupied() || lane[halfsize+2]->isOccupied()){
        VehicleType beforeInterVehicleType = lane[halfsize]->getVehicleType();
 
        if(beforeInterVehicleType == VehicleType::car && lane[halfsize] == lane[halfsize+1]){
@@ -122,6 +121,8 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
          lane[halfsize-1]->unoccupy();
        }
      }
+
+     //if the vehicle is just before the intersection, let all through but have the truck stop
      if(lane[halfsize-1]->isOccupied()){
        VehicleType beforeInterVehicleType = lane[halfsize-1]->getVehicleType();
        if(beforeInterVehicleType == VehicleType::car && lane[halfsize-1] == lane[halfsize]){
@@ -134,6 +135,8 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
    //      else if(beforeInterVehicleType == VehicleType::truck && lane[halfsize] == lane[halfsize] == lane[halfsize+1] == lane[halfsize+2]){
  //        lane[halfsize-2]->unoccupy();
        }
+
+       //if the vehicle is 2 before the intersection, only let car go
        if(lane[halfsize-2]->isOccupied()){
          VehicleType beforeInterVehicleType = lane[halfsize-2]->getVehicleType();
          if(beforeInterVehicleType == VehicleType::car && lane[halfsize-2] == lane[halfsize-1]){
