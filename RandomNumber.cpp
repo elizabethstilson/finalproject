@@ -1,7 +1,7 @@
 #include "RandomNumber.h"
 #include "Dictionary.h"
 #include <string>
-
+//#include "VehicleBase.h"
 using namespace std;
 //Random number class
 //Main purpose is to generate a random number, decide if a vehicle can turn right, which vehicle is gerated and where it will appear 
@@ -11,7 +11,7 @@ using namespace std;
 
 //constructor: need a number to use for the seed and then a string of the file name
 RandomNumber::RandomNumber(int seed, string file) : initialSeed(seed){
-  //rng.seed(initialSeed);
+  rng.seed(initialSeed);
  // uniform_real_distribution<double> randomNum(0.0, 1.0);
   //Dictionary prob(filename); 
   filename = file;
@@ -22,7 +22,7 @@ RandomNumber::~RandomNumber() {}
 
 //generates a random number based on the seed
 double RandomNumber::getNum(){
-  rng.seed(initialSeed);
+ // rng.seed(initialSeed);
   uniform_real_distribution<double> randomNum(0.0, 1.0);
   return randomNum(rng);
 }
@@ -32,9 +32,9 @@ bool RandomNumber::turnRightCar(){
   Dictionary prob(filename);
   double x = this->getNum();
   double car = prob.getPropRTCar();
-  double truck = prob.getPropRTTruck();
-  double suv = prob.getPropRTSUV();
-  if (x <= 1*car){
+  //double truck = prob.getPropRTTruck();
+  //double suv = prob.getPropRTSUV();
+  if (x <= car){
     return true;
   }
   else{
@@ -48,7 +48,7 @@ bool RandomNumber::turnRightSUV(){
   double x = this->getNum();
   double car = prob.getPropRTCar(); 
   double suv = prob.getPropRTSUV(); 
-  if(1*car < x <= (1*car)+suv){  
+  if((car < x) && ( x <= (car+suv))){  
     return true;
   }
   else{
@@ -63,7 +63,7 @@ bool RandomNumber::turnRightTruck(){
   double truck = prob.getPropRTTruck();
   double car = prob.getPropRTCar();
   double suv = prob.getPropRTSUV();
-  if((1*car)+suv < x < ((1*car)+suv)+truck){
+  if(((car+suv) < x) && ( x < (car+suv+truck))){
     return true;
   }
   else{
@@ -75,13 +75,13 @@ bool RandomNumber::turnRightTruck(){
 int RandomNumber::getVehicle(){
   Dictionary prob(filename);
   double propCar = prob.getPropCar();
-  double propTruck = prob.getPropTruck();
+ // double propTruck = prob.getPropTruck();
   double propSuv = prob.getPropSUV(); 
   double x = this->getNum();
-  if (x < 1*propCar){
+  if (x < propCar){
     return 0;   
   }
-  else if (1*propCar < x < (1*propCar)+propSuv){
+  else if ((propCar < x) && (x < (propCar+propSuv))){
     return 1;
   }
   else{
@@ -99,19 +99,87 @@ char RandomNumber::getBound(){
   double sb = prob.getProbVechSB();
   double wb = prob.getProbVechWB(); 
 
-  if(x <= 1*eb){
+  if(x <= eb){
     return 'e';
   }
-  else if(1*eb < x <= (1*eb)+nb){
+  else if((eb < x) && (x <= (eb+nb))){
     return 'n';
   }
-  else if((1*eb+nb) < x <= (1*eb+nb)+sb){
+  else if(((eb+nb) < x) && (x <= (eb+nb+sb))){
     return 's';
   }
-  else if((1*eb+nb)+sb < x <= (1*eb+nb+sb)+wb){
+  else if(((eb+nb+sb) < x) && (x <= (eb+nb+sb+wb))){
     return 'w';
   }
   else{
    return 'x';
+  }
+}
+
+VehicleBase RandomNumber::whatVehicle(){
+  if (this->getVehicle()==0){
+    if (this->getBound() == 'n'){
+      VehicleBase car(VehicleType::car, Direction::north, this->turnRightCar());
+      return car;
+    }
+    else if(this->getBound() == 'w'){
+      VehicleBase car(VehicleType::car, Direction::west, this->turnRightCar());
+      return car;
+    }
+    else if(this->getBound() == 'e'){
+      VehicleBase car(VehicleType::car, Direction::east, this->turnRightCar());
+      return car;
+    }
+    else if(this->getBound() == 's'){
+      VehicleBase car(VehicleType::car, Direction::south, this->turnRightCar());
+      return car;
+    }
+    else{
+      VehicleBase car(VehicleType::car, Direction::north, this->turnRightCar());      
+      return car;
+    }
+  }
+  else if(this->getVehicle()==1){
+    if (this->getBound() == 'n'){
+      VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV());
+      return suv;
+    }
+    else if(this->getBound() == 'w'){
+      VehicleBase suv(VehicleType::suv, Direction::west, this->turnRightSUV());
+      return suv;
+    }
+    else if(this->getBound() == 'e'){
+      VehicleBase suv(VehicleType::suv, Direction::east, this->turnRightSUV());
+      return suv;
+    }
+    else if(this->getBound() == 's'){
+      VehicleBase suv(VehicleType::suv, Direction::south, this->turnRightSUV());
+      return suv;
+    }
+    else{
+      VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV()); 
+      return suv;
+    }
+  }
+  else{
+    if (this->getBound() == 'n'){
+      VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());
+      return truck;
+    }
+    else if(this->getBound() == 'w'){
+      VehicleBase truck(VehicleType::truck, Direction::west, this->turnRightTruck());
+      return truck;
+    }
+    else if(this->getBound() == 'e'){
+      VehicleBase truck(VehicleType::truck, Direction::east, this->turnRightTruck());
+      return truck;
+    }
+    else if(this->getBound() == 's'){
+      VehicleBase truck(VehicleType::truck, Direction::south, this->turnRightTruck());
+      return truck; 
+    }
+    else{
+      VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());         return truck;
+    }
   }
 }
