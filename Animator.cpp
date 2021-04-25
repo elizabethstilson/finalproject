@@ -196,13 +196,15 @@ void Animator::drawNorthPortion(int time)
 
         // either draw (a portion of) southbound vehicle if present,
         // or an empty section
+        //std::cout << "occupied in Animator: " << northToSouth[s]->isOccupied() << std::endl;
         if (northToSouth[s]->isOccupied()==false)
             std::cout << Animator::EMPTY_SECTION;
-        else
-          std::cout << getVehicleColor(northToSouth[s])
+        else{
+            //std::cout << "in animator" << std::endl;
+            std::cout << getVehicleColor(northToSouth[s])
                   << std::setfill('0') << std::setw(Animator::DIGITS_TO_DRAW)
                 << northToSouth[s]->getVehicleID()
-               << Animator::COLOR_RESET;
+               << Animator::COLOR_RESET;}
 
         std::cout << Animator::SECTION_BOUNDARY_NS;
 

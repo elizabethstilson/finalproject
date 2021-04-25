@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     Animator anim(halfSize);
 
     //Variables to control the lights
-    double maxTime = dict.getMaxSimTime();
+    //double maxTime = dict.getMaxSimTime();
     int currentTime = 0;
     double greenNS = dict.getGreenNS();
     double yellowNS = dict.getYellowNS();
@@ -57,9 +57,18 @@ int main(int argc, char* argv[])
     Lane eastbound(halfSize, Direction::east);
     Lane southbound(halfSize, Direction::south);
     Lane northbound(halfSize, Direction::north);
-
+    for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+       cout << boolalpha << (*(northbound.getLaneVector()).at(a)).isOccupied() << endl;}
     VehicleBase vehicleA(VehicleType::car, Direction::east, false);
     eastbound.assignVehicle(vehicleA);
+    cout << (*(eastbound.getLaneVector()).at(0)).isOccupied() << " : east " << endl;
+    cout << (*(eastbound.getLaneVector()).at(1)).isOccupied() << " : east " << endl;
+    cout << (*(eastbound.getLaneVector()).at(2)).isOccupied() << " : east " << endl;
+    Lane *npntr = &northbound;
+    eastbound.moveLane(LightColor::green, npntr); 
+    cout << (*(eastbound.getLaneVector()).at(0)).isOccupied() << " : east " << endl;
+    cout << (*(eastbound.getLaneVector()).at(1)).isOccupied() << " : east " << endl;
+    cout << (*(eastbound.getLaneVector()).at(2)).isOccupied() << " : east " << endl;
     cout << "testing whatVehicle" << endl;
     VehicleBase vB = random.whatVehicle();
     cout << vB.getVehicleID() << " : vehicleID" << endl;
@@ -101,15 +110,21 @@ int main(int argc, char* argv[])
            test++;
           }
           else if(veh.getVehicleOriginalDirection() == Direction::east){
+           for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+            cout << boolalpha << (northbound.getLaneVector()).at(a)->isOccupied() << endl;}
            eastbound.assignVehicle(veh); 
            cout << "east" << endl;
            test++;
+          for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+            cout << boolalpha << (northbound.getLaneVector()).at(a)->isOccupied() << endl;}
           }
           else{
            westbound.assignVehicle(veh);
            cout << "west" << endl;
            test++;
-          } 
+          }
+          //for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+           // cout << boolalpha << (northbound.getLaneVector()).at(a)->isOccupied() << endl;} 
           anim.setVehiclesNorthbound(northbound.getLaneVector());
           anim.setVehiclesWestbound(westbound.getLaneVector());
           anim.setVehiclesSouthbound(southbound.getLaneVector());
@@ -124,6 +139,7 @@ int main(int argc, char* argv[])
           cin.get(space);
           currentTime++;
          // cout << currentTime << endl;
+
        }
       }
       cout << test << " number of vehicles" << endl;
