@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <random>
+#include "VehicleBase.h"
 using namespace std;
 
 class RandomNumber{
@@ -27,6 +28,7 @@ class RandomNumber{
     int getVehicle(); //0,1,2 (if else) -generate num beginning
     char getBound(); //n,s,e,w (if else)
     //0-0.25 = nb, 0.26 - 0.35 = eb, 0.36 - 0.50 = wb, 0.51 - 0.65 = sb, 0.66+ none
+    VehicleBase whatVehicle();
 
 };
 

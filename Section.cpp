@@ -4,18 +4,18 @@
 #include "Section.h"
 
 Section::Section(){
-  this->occupied = false;
+  occupied = false;
 }
 
 Section::~Section(){}
 
 void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
-  this->occupied = true;
-  this->vehicleType = vehicleX.getVehicleType();
-  this->vehicleID = vehicleX.getVehicleID();
-  this->sectionDirection = direction;
-  this->turnStatus = vehicleX.getTurningStatus();
-  this->vehicle = vehicleX;
+  occupied = true;
+  vehicleType = vehicleX.getVehicleType();
+  vehicleID = vehicleX.getVehicleID();
+  sectionDirection = direction;
+  turnStatus = vehicleX.getTurningStatus();
+  vehicle = vehicleX;
 }
 
 
@@ -24,19 +24,19 @@ bool Section::isOccupied(){
 }
 
 bool Section::getTurningStatus(){
-  return this->turnStatus;
+  return turnStatus;
 }
 
 VehicleType Section::getVehicleType(){
-  return this->vehicleType;
+  return vehicleType;
 }
 
 Direction Section::getSectionDirection(){
-  return this->sectionDirection;
+  return sectionDirection;
 }
 
 int Section::getVehicleID(){
-  return this->vehicleID;
+  return vehicleID;
 }
 
 void Section::unoccupy(){

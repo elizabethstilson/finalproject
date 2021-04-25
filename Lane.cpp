@@ -2,6 +2,7 @@
 #define __LANE_CPP__
 
 #include "Lane.h"
+#include <iostream>
 
 // Sets up a lane based on its size and direction
 Lane::Lane(int halfsize, Direction direction){
@@ -34,8 +35,10 @@ void Lane::assignVehicle(VehicleBase vehicle){
 
     // add as many parts of the VehicleType::car to the lane, if the lane is full, no VehicleType::car
     // can be added
-    if(lane.at(i)->isOccupied() == false){
-        lane.at(i)->makeOccupied(vehicle, vehicle.getVehicleOriginalDirection());
+    Section temp = *lane.at(i);
+    if(temp.isOccupied() == false){
+       temp.makeOccupied(vehicle, vehicle.getVehicleOriginalDirection());
+       //std::cout << (&temp) << std::endl; 
     }
 
   }
@@ -45,23 +48,25 @@ void Lane::assignVehicle(VehicleBase vehicle){
 
 void Lane::moveLane(LightColor light, Lane* turnLane){
   int intersection = halfsize;
+  //std::cout << "numsections: " << numSections << std::endl;
   // LightColor::green light moveLane
+//  int i = numSections;
   if(light == LightColor::green){
-
+    std::cout << "in green light" << std::endl;
     int i = numSections;
 
     while(i > 0){
-
-      // If a vehicle is at the intersection and is set to turn
-      if((i = intersection) && (lane[i]->getTurningStatus())){
+      // If a vehicle is at the intersection and is set to turn also the section should be occupied 
+      if((i == intersection) && (lane[i]->getTurningStatus() && (lane[i]->isOccupied()==true))){
+        std::cout << "in if" << std::endl;
         turnRight(lane[i], turnLane);
       }
       // Moves the other vehicles forward
       else{
-        lane[i]= lane[i-1];
-        i -= 1;
+       lane[i]= lane[i-1];
+       // i = i-1;
       }
-
+      i = i-1;
     }
     VehicleType firstVehicleType = lane[1]->getVehicleType();
 
@@ -79,8 +84,8 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
 
   // Elizabeth to do
   // Three separate while loops - for VehicleType::cars that are beyond intersection, in intersection, and before intersection
-   if(light == LightColor::yellow){
-
+   else if(light == LightColor::yellow){
+       std::cout << "in yellow light" << std::endl; 
 
        int i = numSections;
 
@@ -139,12 +144,13 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
 
   // Red light
   else{
-    int i = numSections;
+    std::cout << "in red" << std::endl; 
+    int x = numSections;
 
-    while(i > halfsize){
+    while(x > halfsize){
 
-      lane[i]= lane[i-1];
-      i -= 1;
+      lane[x]= lane[x-1];
+      x -= 1;
 
     }
     lane[halfsize]->unoccupy();
