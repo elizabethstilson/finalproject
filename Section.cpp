@@ -2,12 +2,26 @@
 #define __SECTION_CPP__
 
 #include "Section.h"
-
+#include <iostream>
 Section::Section(){
-  occupied = false;
+  occupied =false;
 }
 
-Section::~Section(){}
+Section::Section(int x){
+  std::cout << "in Section constructor" << std::endl;
+  occupied = false;
+  int number = x;
+  std::cout << occupied << " in section" << std::endl; 
+}
+
+Section::~Section(){
+  //delete this; 
+}
+
+bool Section::isOccupied(){
+  return occupied;
+  //return false;
+}
 
 void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
   occupied = true;
@@ -18,9 +32,8 @@ void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
   vehicle = vehicleX;
 }
 
-
-bool Section::isOccupied(){
-  return occupied;
+int Section::getNumber(){
+  return number;
 }
 
 bool Section::getTurningStatus(){
