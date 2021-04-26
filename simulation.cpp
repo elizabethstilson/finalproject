@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     Lane eastbound(halfSize, Direction::east);
     Lane southbound(halfSize, Direction::south);
     Lane northbound(halfSize, Direction::north);
-    for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+    /*for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
        cout << boolalpha << (*(northbound.getLaneVector()).at(a)).isOccupied() << endl;}
     VehicleBase vehicleA(VehicleType::car, Direction::east, false);
     eastbound.assignVehicle(vehicleA);
@@ -75,10 +75,23 @@ int main(int argc, char* argv[])
     cout << vB.getTurningStatus() << " : turnStatus" << endl;
     VehicleBase vC = random.whatVehicle();
     cout << vC.getVehicleID() << " : vehicleID" << endl;
-    cout << vC.getTurningStatus() << " : turnStatus" << endl;
+    cout << vC.getTurningStatus() << " : turnStatus" << endl;*/
+    
     //variable to control drawing everything
     char space;
-
+    
+    Section sect1;
+    //sect1.makeOccupied(vC, Direction::east); 
+    Section sect2 = Section(sect1);
+    cout << "is occupied/testing copy constructor" << endl;
+    cout << "sect1: " << sect1.isOccupied() << endl;
+    cout << "sect2: " << sect2.isOccupied() << endl;
+    
+     
+     
+     
+     
+    
     //trafic light change loop
     //have it set for 28, but will need to change to the maxTime = max simulation time
     cout << "testing traffic light" << endl;
@@ -98,6 +111,10 @@ int main(int argc, char* argv[])
 	 else{
           anim.setLightNorthSouth(LightColor::green);
           anim.setLightEastWest(LightColor::red);
+          westbound.moveLane(LightColor::red, spntr);
+          eastbound.moveLane(LightColor::red, npntr);
+          northbound.moveLane(LightColor::green, wpntr);
+          southbound.moveLane(LightColor::green, epntr);
           VehicleBase veh = random.whatVehicle();
           if(veh.getVehicleOriginalDirection() == Direction::south){
            southbound.assignVehicle(veh);
@@ -115,8 +132,8 @@ int main(int argc, char* argv[])
            eastbound.assignVehicle(veh); 
            cout << "east" << endl;
            test++;
-          for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
-            cout << boolalpha << (northbound.getLaneVector()).at(a)->isOccupied() << endl;}
+          //for(int a = 0; a < (northbound.getLaneVector()).size(); a++){
+           // cout << boolalpha << (northbound.getLaneVector()).at(a)->isOccupied() << endl;}
           }
           else{
            westbound.assignVehicle(veh);
@@ -130,10 +147,11 @@ int main(int argc, char* argv[])
           anim.setVehiclesSouthbound(southbound.getLaneVector());
           anim.setVehiclesEastbound(eastbound.getLaneVector());
           //cout << "i made it before new stuff" << endl;
-          westbound.moveLane(LightColor::red, spntr); 
+          /*westbound.moveLane(LightColor::red, spntr); 
           eastbound.moveLane(LightColor::red, npntr);
           northbound.moveLane(LightColor::green, wpntr);
-          southbound.moveLane(LightColor::green, epntr); 
+          southbound.moveLane(LightColor::green, epntr); */
+           
           //cout << "i made it after new stuff" << endl;
           anim.draw(currentTime);
           cin.get(space);

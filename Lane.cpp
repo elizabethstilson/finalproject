@@ -7,24 +7,24 @@
 // Sets up a lane based on its size and direction
 Lane::Lane(int halfsize, Direction direction){
   this->halfsize = halfsize;
- // Section newSection;
+  temp = &emptySec;
   this->numSections = halfsize*2 +2;
   //this->lane(numSections);
   Section* newSection = new Section[numSections];
   for(int i =0; i < numSections; i++){
     //newSection = new Section(i);
-    std::cout << &newSection[i] << std::endl;
+   // std::cout << &newSection[i] << std::endl;
     lane.push_back(&newSection[i]);
-    std::cout << (*lane.at(i)).isOccupied() << " in Lane" << std::endl;
+   // std::cout << (*lane.at(i)).isOccupied() << " in Lane" << std::endl;
   }
   this->laneDirection = direction;
 }
 
 Lane::~Lane(){
-  for(int x = 0; x <lane.size(); x++){
-    delete lane[x];
+  //for(int x = 0; x <lane.size(); x++){
+   // delete lane[x];
+   // this will give a segmentation fault error
   }
-}
 
 // Have a new vehicle enter the lane
 void Lane::assignVehicle(VehicleBase vehicle){
@@ -72,12 +72,18 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
         std::cout << "in if" << std::endl;
         turnRight(lane[i], turnLane);
       }
+      //when there is a vehicle hanging off
+     // else if(   ){
+      
+      //}
       // Moves the other vehicles forward
       else{
-        Section* temp;
-        temp = lane[i-1];
+        Section temp(*lane[i-1]);
+        lane[i] = &temp;
+
+       /* temp = lane[i-1];
         lane[i] = temp;
-       // lane[i]= lane[i-1];
+        lane[i]= lane[i-1];*/
        // i = i-1;
       }
       i = i-1;
@@ -87,15 +93,17 @@ void Lane::moveLane(LightColor light, Lane* turnLane){
     // Because the sections are copied last to first, the first section
     // needs to either be changed to no vehicle or be a part of the vehicles
     // in the section(s) in front of it if only part of the VehicleType::car is in the lane
-      Section *temp;
+      //Section* temp;
       if((firstVehicleType == VehicleType::car) && (lane[1]->getVehicleID() == lane[2]->getVehicleID())){
       std::cout << "in moveLane/unoccupy" << std::endl;
       lane[0] = temp;
       lane[0]->unoccupy();
     } else if((firstVehicleType == VehicleType::suv) && (lane[1] == lane[2]) && (lane[2] == lane[3])){
+      std::cout << "in moveLane/unoccupy" << std::endl;
       lane[0] = temp;
       lane[0]->unoccupy();
     } else if(firstVehicleType == VehicleType::truck && (lane[1] == lane[2]) && (lane[2] == lane [3]) && (lane[3] == lane[4])){
+      std::cout << "in moveLane/unoccupy" << std::endl;
       lane[0] = temp;
       lane[0]->unoccupy();
     }

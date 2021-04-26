@@ -14,6 +14,8 @@ class Lane{
     int numSections;
     int halfsize;
     Direction laneDirection;
+    Section emptySec;
+    Section* temp;
 
   public:
     std::vector<Section*> lane;

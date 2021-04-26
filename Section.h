@@ -17,11 +17,12 @@ class Section{
     Direction sectionDirection;
     bool turnStatus;
     int vehicleID;
-    int number;
 
   public:
     Section();
-    Section(int x);
+    //Section(int x);
+    Section(Section& copy);
+    Section& operator=(const Section& copy);
     ~Section();
 
     bool isOccupied();
@@ -31,7 +32,6 @@ class Section{
     int getVehicleID();
     void unoccupy();
     void makeOccupied(VehicleBase vehicleX, Direction direction);
-    int getNumber();
 };
 
 
