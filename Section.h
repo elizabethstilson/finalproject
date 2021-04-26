@@ -15,6 +15,7 @@ class Section{
     VehicleType vehicleType;
     VehicleBase vehicle;
     Direction sectionDirection;
+    Direction vehicleDirection;
     bool turnStatus;
     int vehicleID;
 
@@ -29,7 +30,9 @@ class Section{
     bool getTurningStatus();
     VehicleType getVehicleType();
     Direction getSectionDirection();
+    Direction getVehicleDirection();
     int getVehicleID();
+    VehicleBase getVehicle();
     void unoccupy();
     void makeOccupied(VehicleBase vehicleX, Direction direction);
 };

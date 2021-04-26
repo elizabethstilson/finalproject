@@ -200,7 +200,7 @@ void Animator::drawNorthPortion(int time)
         if (northToSouth[s]->isOccupied()==false)
             std::cout << Animator::EMPTY_SECTION;
         else{
-            //std::cout << "in animator" << std::endl;
+            std::cout << "in animator" << std::endl;
             std::cout << getVehicleColor(northToSouth[s])
                   << std::setfill('0') << std::setw(Animator::DIGITS_TO_DRAW)
                 << northToSouth[s]->getVehicleID()

@@ -18,6 +18,7 @@ Section::Section(Section& copy)
  : occupied{copy.occupied}
  , vehicleType{copy.vehicleType}
  , vehicle{copy.vehicle}
+ , vehicleDirection{copy.vehicleDirection}
  , sectionDirection{copy.sectionDirection}
  , turnStatus{copy.turnStatus}
  , vehicleID{copy.vehicleID} {}
@@ -26,6 +27,7 @@ Section& Section::operator=(const Section& copy){
  if(this == &copy){
   return *this;}
  occupied = copy.occupied;
+ vehicleDirection =  copy.vehicleDirection;
  vehicleType = copy.vehicleType;
  vehicle = copy.vehicle;
  sectionDirection = copy.sectionDirection;
@@ -52,6 +54,7 @@ void Section::makeOccupied(VehicleBase vehicleX, Direction direction){
   sectionDirection = direction;
   turnStatus = vehicleX.getTurningStatus();
   vehicle = vehicleX;
+  vehicleDirection = vehicleX.getVehicleOriginalDirection();
 }
 
 bool Section::getTurningStatus(){
@@ -66,8 +69,16 @@ Direction Section::getSectionDirection(){
   return sectionDirection;
 }
 
+Direction Section::getVehicleDirection(){
+  return vehicleDirection;
+}
+
 int Section::getVehicleID(){
   return vehicleID;
+}
+
+VehicleBase Section::getVehicle(){
+  return vehicle;
 }
 
 void Section::unoccupy(){
