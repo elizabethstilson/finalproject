@@ -52,40 +52,63 @@ void run_test(void(*unit_test)(), const char* name) {
 // Tests the isOccupied() method in the Section class to ensure the proper boolean is returned 
 // after any modification.
 void Section_isOccupied(){
-  Section section;
+  // Makes a section not set to be in the intersection 
+  Section section(false);
+   
+  // Tests after creating a new section 
   assert_that(section.isOccupied() == false, "isOccupied() does notn return the correct boolean upon initial creation");
-  
-  VehicleBase vehicle1(VehicleType::car, Direction::north, true);
+   
+  // Tests after making a section occupied
   section.makeOccupied();
   assert_that(section.isOccupied() == true, "isOccupied() does not return the correct boolean after assigning vehicle");
-  
-  //
-  Section section2(section);
-  assert_that(section2.isOccupied() == true, "isOccupied() does not return the correct boolean after using copy const");
 
+  // Tests after unoccupying a section
   section.unoccupy();
   assert_that(section.isOccupied() == false, "isOccupied() does not return the correct boolean after calling unoccupy()");
 
+  // Makes a section not set to be in the intersection 
+  Section section2(true);
+   
+  // Tests after creating a new section 
+  assert_that(section2.isOccupied() == false, "isOccupied() does notn return the correct boolean upon initial creation");
+   
+  // Tests after making a section occupied
+  section.makeOccupied();
+  assert_that(section2.isOccupied() == true, "isOccupied() does not return the correct boolean after assigning vehicle");
+
+  // Tests after unoccupying a section
+  section.unoccupy();
+  assert_that(section2.isOccupied() == false, "isOccupied() does not return the correct boolean after calling unoccupy()");
 }
 
-/*void Lane_assignVehicle(){
-  Lane testLane(4, Direction::east);
+// Tests the getLaneDirection method upon creation of a lane
+void Lane_getLaneDirection(){
+  Lane lane1(4, Direction::north, std::vector<VehicleBase*> vehicles);
+  std::string lane1Dir = lane1.getLaneDirection();
+  assert_that((lane1Dir == "north"), "getLaneDirection() does not return the correct direction");
+}
 
+//
+void Lane_assignVehicle(){
+  // Creating a lane based on halfize of 4 (total num sections =  10)
+  std::vector<VehicleBase*> testLaneVeh(10, nullptr);
+  Lane testLane(4, Direction::east, testLaneVeh);
+  
   //We will test based on a car that only uses 2 sections 
-  VehicleBase vehicle2(VehicleType::car, Direction::east, false);
+  VehicleBase* vehicle2 = new VehicleBase(VehicleType::car, Direction::east, false);
   int veh2ID = vehicle2.getVehicleID();
   testLane.assignVehicle(vehicle2);
-  std::vector<Section*> testLaneVector = testLane.getLaneVector();
+  std::vector<Vehicles*> testVehicleVector = testLane.getVehicleBase();
  
   // The two test ID variables should be the same as the veh2ID since each section is referencing the same vehicle. 
-  int testID1 = testLaneVector[0]->getVehicleID();
-  int testID2 = testLaneVector[1]->getVehicleID();
+  int testID1 = testVehicleVector[0]->getVehicleID();
+  int testID2 = testVehicleVector[1]->getVehicleID();
 
   assert_that(veh2ID == testID1, "the vehicle ID recieved from position 0 in the lane vector does not equal what it should");
   assert_that(veh2ID == testID2, "the vehicleID recieved from position 1 in the lane vector does not equal what it should");
   
   //Here we make sure no vehicle can be added if sections 0 and 1 are occupied in the lane
-  VehicleBase vehicle3(VehicleType::truck, Direction::east, false);
+  VehicleBase* vehicle3 = new VehicleBase(VehicleType::truck, Direction::east, false);
   testLane.assignVehicle(vehicle3);
   int veh3ID = vehicle3.getVehicleID();
   testLaneVector = testLane.getLaneVector();
@@ -129,8 +152,10 @@ int main() {
 
   run_test(RandomNumber_bound, "getBound() decides which bound the vehicle enters in the simulation"); 
 
-/*  run_test(Section_isOccupied, "isOccupied() returns the correct boolean value");
+  run_test(Section_isOccupied, "isOccupied() returns the correct boolean value");
   
+  run_test(Lane_getVehicleDirection, "getVehicleDirection() returns the correct direction");
+ 
   run_test(Lane_assignVehicle, "assignVehicle() properly assigns the correct vehicle to the correct seection");
 */
 }
