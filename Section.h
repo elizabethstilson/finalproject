@@ -12,29 +12,31 @@ class Section{
   private:
 
     bool occupied;
-    VehicleType vehicleType;
-    VehicleBase vehicle;
-    Direction sectionDirection;
-    Direction vehicleDirection;
-    bool turnStatus;
-    int vehicleID;
+    //VehicleType vehicleType;
+    //VehicleBase vehicle;
+    bool intersection;
+   // Direction sectionDirection;
+   // Direction vehicleDirection;
+   // bool turnStatus;
+   // int vehicleID;
 
   public:
-    Section();
-    //Section(int x);
-    Section(Section& copy);
-    Section& operator=(const Section& copy);
+    Section(bool intersection);
+    //Section(Direction laneDirection);
+   // Section(Section& copy);
+   // Section& operator=(const Section& copy);
     ~Section();
 
     bool isOccupied();
-    bool getTurningStatus();
-    VehicleType getVehicleType();
-    Direction getSectionDirection();
-    Direction getVehicleDirection();
-    int getVehicleID();
-    VehicleBase getVehicle();
+    bool ifIntersection();
+   // bool getTurningStatus();
+    //VehicleType getVehicleType();
+   // Direction getSectionDirection();
+   // Direction getVehicleDirection();
+   // int getVehicleID();
+    //VehicleBase getVehicle();
     void unoccupy();
-    void makeOccupied(VehicleBase vehicleX, Direction direction);
+    void makeOccupied();
 };
 
 

@@ -1,7 +1,7 @@
 #include "RandomNumber.h"
 #include "Dictionary.h"
 #include <string>
-//#include "VehicleBase.h"
+#include "VehicleBase.h"
 using namespace std;
 //Random number class
 //Main purpose is to generate a random number, decide if a vehicle can turn right, which vehicle is gerated and where it will appear 
@@ -116,70 +116,71 @@ char RandomNumber::getBound(){
   }
 }
 
-VehicleBase RandomNumber::whatVehicle(){
+VehicleBase* RandomNumber::whatVehicle(){
   if (this->getVehicle()==0){
     if (this->getBound() == 'n'){
-      VehicleBase car(VehicleType::car, Direction::north, this->turnRightCar());
+      VehicleBase* car = new VehicleBase(VehicleType::car, Direction::north, this->turnRightCar());
       return car;
     }
     else if(this->getBound() == 'w'){
-      VehicleBase car(VehicleType::car, Direction::west, this->turnRightCar());
+      VehicleBase* car = new VehicleBase(VehicleType::car, Direction::west, this->turnRightCar());
       return car;
     }
     else if(this->getBound() == 'e'){
-      VehicleBase car(VehicleType::car, Direction::east, this->turnRightCar());
+      VehicleBase* car = new VehicleBase(VehicleType::car, Direction::east, this->turnRightCar());
       return car;
     }
     else if(this->getBound() == 's'){
-      VehicleBase car(VehicleType::car, Direction::south, this->turnRightCar());
+      VehicleBase* car = new VehicleBase(VehicleType::car, Direction::south, this->turnRightCar());
       return car;
     }
     else{
-      VehicleBase car(VehicleType::car, Direction::north, this->turnRightCar());      
-      return car;
+      //VehicleBase* car(VehicleType::car, Direction::north, this->turnRightCar());      
+      return nullptr;
     }
   }
   else if(this->getVehicle()==1){
     if (this->getBound() == 'n'){
-      VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV());
+      VehicleBase* suv = new VehicleBase(VehicleType::suv, Direction::north, this->turnRightSUV());
       return suv;
     }
     else if(this->getBound() == 'w'){
-      VehicleBase suv(VehicleType::suv, Direction::west, this->turnRightSUV());
+      VehicleBase* suv = new VehicleBase(VehicleType::suv, Direction::west, this->turnRightSUV());
       return suv;
     }
     else if(this->getBound() == 'e'){
-      VehicleBase suv(VehicleType::suv, Direction::east, this->turnRightSUV());
+      VehicleBase* suv = new VehicleBase(VehicleType::suv, Direction::east, this->turnRightSUV());
       return suv;
     }
     else if(this->getBound() == 's'){
-      VehicleBase suv(VehicleType::suv, Direction::south, this->turnRightSUV());
+      VehicleBase* suv = new VehicleBase(VehicleType::suv, Direction::south, this->turnRightSUV());
       return suv;
     }
     else{
-      VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV()); 
-      return suv;
+     // VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV()); 
+      return nullptr;
     }
   }
   else{
     if (this->getBound() == 'n'){
-      VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());
+      VehicleBase* truck = new VehicleBase(VehicleType::truck, Direction::north, this->turnRightTruck());
       return truck;
     }
     else if(this->getBound() == 'w'){
-      VehicleBase truck(VehicleType::truck, Direction::west, this->turnRightTruck());
+      VehicleBase* truck = new VehicleBase(VehicleType::truck, Direction::west, this->turnRightTruck());
       return truck;
     }
     else if(this->getBound() == 'e'){
-      VehicleBase truck(VehicleType::truck, Direction::east, this->turnRightTruck());
+      VehicleBase* truck = new VehicleBase(VehicleType::truck, Direction::east, this->turnRightTruck());
       return truck;
     }
     else if(this->getBound() == 's'){
-      VehicleBase truck(VehicleType::truck, Direction::south, this->turnRightTruck());
+      VehicleBase* truck = new VehicleBase(VehicleType::truck, Direction::south, this->turnRightTruck());
       return truck; 
     }
     else{
-      VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());         return truck;
+     // VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());  
+     return nullptr;
     }
   }
 }

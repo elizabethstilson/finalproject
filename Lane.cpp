@@ -6,33 +6,92 @@
 #include <string>
 
 // Sets up a lane based on its size and direction
-Lane::Lane(int halfsize, Direction direction){
+Lane::Lane(int halfsize, Direction direction, std::vector<VehicleBase*> vehicles){
   this->halfsize = halfsize;
-  temp = &emptySec;
- // Section newSection;
+//  temp = &emptySec;
+  laneDirection = direction;
   numSections = halfsize*2 +2;
-  //this->lane(numSections);
-  Section* newSection;
+  //Section newSection;
   for(int i =0; i < numSections; i++){
-   newSection = new Section();
-
-   lane.push_back(newSection);
-   laneDirection = direction;
-
+   //deciding if section is an intersection 
+   if(i == halfsize || i == halfsize+1){
+    
+    Section newSection = new Section(true);
+    lane.push_back(newSection);
+   }
+   else{
+    Section newSection = new Section(false);
+    lane.push_back(newSection);
+   }
+   //lane.push_back(newSection);
   }
+  this->vehicles = vehicles;
 }
 
 
 Lane::~Lane(){}
 
+std::string Lane::getLaneDirection(){
+ if(Direction::east == laneDirection){
+  return "east";}
+ else if(Direction::west == laneDirection){
+   return "west";}
+ else if(Direction::south == laneDirection){
+  return "south";}
+ else if(Direction::north == laneDirection){
+  return "north";}
+ else{
+  return "none";} 
+} 
+
+
+/*std::string Lane::getlaneDirection(){
+          int tracker = 0;
+         std::string vehDir;
+         std::string laneDir;
+         for(int x = numSections-1; x >= 0; x--){    
+           Direction curVehDir = lane[x]->getVehicleDirection();
+           Direction curLaneDir = laneDirection;
+           if(curVehDir == curLaneDir){
+            //  std::string vehDir;
+             // std::string laneDir;
+               if(curVehDir == (Direction::west)){
+                   vehDir = "west";
+               } else if(curVehDir == (Direction::north)){
+                   vehDir = "north";
+               } else if(curVehDir == (Direction::east)){
+                   vehDir = "east";
+               } else{
+                   vehDir = "south";
+               }
+               if(curLaneDir == (Direction::north)){
+                   laneDir = "north";
+                   //tracker++;
+               } else if(curLaneDir == (Direction::west)){
+                   laneDir = "west";
+                  // tracker++;
+               } else if(curLaneDir ==  (Direction::east)){
+                   laneDir = "east";
+                  // tracker++;
+                   laneDir = "south";
+                  // tracker++;
+               }
+               tracker++;
+               std::cout << "vehicle direction: " << vehDir <<std::endl;
+               std::cout << "lane direction: " << laneDir << std::endl;
+            }
+           }
+               std::cout << tracker << " : how many sections" << std::endl;
+               return laneDir;
+} */
+
 // Have a new vehicle enter the lane
-void Lane::assignVehicle(VehicleBase vehicle){
+void Lane::assignVehicle(VehicleBase* vehicle){
   int numSectionsNeeded;
 
-  // Figure out how many sections we need to assign
-  if(vehicle.getVehicleType() == VehicleType::car){
+  if(vehicle->getVehicleType() == VehicleType::car){
     numSectionsNeeded = 2;
-  } else if(vehicle.getVehicleType() == VehicleType::suv){
+  } else if(vehicle->getVehicleType() == VehicleType::suv){
     numSectionsNeeded = 3;
   } else{
     numSectionsNeeded = 4;
@@ -42,22 +101,303 @@ void Lane::assignVehicle(VehicleBase vehicle){
 
   
     // std::cout << "option 1" << std::endl;
-    Section temp = *lane.at(i);
+    Section temp = lane.at(i);
     //std::cout << "option 2" << std::endl; 
     if(temp.isOccupied() == false){
     // std::cout << "option 3" << std::endl;
-     lane.at(i)->makeOccupied(vehicle, vehicle.getVehicleOriginalDirection());
-     //std::cout << "option 4" << std::endl;
+     lane.at(i).makeOccupied();
+     
+     vehicles.at(i) = vehicle; 
+   //std::cout << "option 4" << std::endl;
    //  std::cout << (&temp) << std::endl;
    }
    std::cout << "option 5" << std::endl;
+  /* Direction curVehDir = lane[i]->getVehicleDirection();
+           Direction curLaneDir = laneDirection;
+           if(curVehDir == curLaneDir){
+              std::string vehDir;
+              std::string laneDir;
+               if(curVehDir == (Direction::west)){
+                   vehDir = "west";
+               } else if(curVehDir == (Direction::north)){
+                   vehDir = "north";
+               } else if(curVehDir == (Direction::east)){
+                   vehDir = "east";
+               } else{
+                   vehDir = "south";
+               }
+               if(curLaneDir == (Direction::north)){
+                   laneDir = "north";
+               } else if(curLaneDir == (Direction::west)){
+                   laneDir = "west";
+               } else if(curLaneDir ==  (Direction::east)){
+                   laneDir = "east";
+               } else{
+                   laneDir = "south";
+               }
+               std::cout << "vehicle direction: " << vehDir <<std::endl;
+               std::cout << "lane direction: " << laneDir << std::endl;
 
+            }*/
   }
 
 
 }
 
-void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
+//a get vector for the vehicle bases
+std::vector<VehicleBase*> Lane::getVehicleBase(){
+  return vehicles;
+}
+
+void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int yellowLight){
+//if light is green 
+  int numIntersection = halfsize;
+  if (light == LightColor::green){
+     std::cout << "in green light" << std::endl;
+      if(lane.at(numSections-1).isOccupied()){
+          vehicles.at(numSections-1) = nullptr;
+          lane.at(numSections-1).unoccupy();
+      }
+      for(int i = numSections-2; i >= 0; i--){
+        
+        if((i==numIntersection) && (lane[i].isOccupied() == true)  && (vehicles[i]->getTurningStatus())){
+         turnRight(vehicles[i], turnLane);   
+         lane[i].unoccupy();
+         vehicles.at(i) = nullptr;
+       }
+       else if(i == numIntersection && lane[i].isOccupied()){
+         vehicles.at(i+1) = vehicles.at(i);
+         lane[i+1].makeOccupied();
+         lane[i].unoccupy();
+         vehicles.at(i) = nullptr;
+       }
+       else if(i == numIntersection+1 && lane[i].isOccupied()){
+         vehicles.at(i+1) = vehicles.at(i);
+         lane[i+1].makeOccupied();
+         lane[i].unoccupy();
+         vehicles.at(i) = nullptr;
+       }     
+       else{
+         if(vehicles.at(i) != nullptr){
+           std::cout << "in where it is suppose to be" << std::endl;
+           vehicles.at(i+1) = vehicles.at(i);
+           vehicles.at(i) = nullptr;
+           lane[i+1].makeOccupied();
+           lane[i].unoccupy();
+         
+          }
+
+       }
+     
+     } //end of for loop 
+     std::cout << "after for loop" << std::endl;
+     //to handle partial cars entering
+     std::cout << "occupy? : " << (lane.at(1)).isOccupied() << std::endl; 
+    /* if(lane.at(1).isOccupied()){
+       VehicleType firstVehicleType = vehicles.at(1)->getVehicleType();
+       VehicleBase* firstVehicle = (vehicles.at(1));
+       std::cout << "before if" << std::endl;
+        if(partialVehicle(firstVehicleType, firstVehicle)){
+         vehicles.at(0) = firstVehicle;
+         (lane.at(0)).makeOccupied();
+         std::cout << "after if in partial part" << std::endl; 
+       } 
+      }*///end of if statment 
+   }//end of green light
+
+//start of yellow light
+  else if(light == LightColor::yellow){
+    if(lane.at(numSections-1).isOccupied()){
+          vehicles.at(numSections-1) = nullptr;
+          lane.at(numSections-1).unoccupy();
+      }
+      std::cout << "halfsize: " << halfsize << std::endl;
+      for(int i = numSections-2; i >= 0; i--){
+         if(!lane.at(i+1).isOccupied()){
+         std::cout << "i : " << i << std::endl;
+         if(i < halfsize-1 || i >= halfsize){
+           if(vehicles.at(i) != nullptr){
+             std::cout << "in where it is suppose to be 2" << std::endl;
+             vehicles.at(i+1) = vehicles.at(i);
+             vehicles.at(i) = nullptr;
+             lane[i+1].makeOccupied();
+             lane[i].unoccupy();
+           }  
+          /* if(lane.at(1).isOccupied()){
+             VehicleType firstVehicleType = vehicles.at(1)->getVehicleType();
+             VehicleBase* firstVehicle = (vehicles.at(1));
+             std::cout << "before if" << std::endl;
+             if(partialVehicle(firstVehicleType, firstVehicle)){
+              vehicles.at(0) = firstVehicle;
+              (lane.at(0)).makeOccupied();
+              std::cout << "after if in partial part" << std::endl;
+             }
+            }*/
+          } //end of greater than halfsize
+        else{
+           std::cout << "enters else" << std::endl;
+         if(lane.at(i).isOccupied()){ 
+           int numSectionsNeeded = getNumSections(vehicles.at(i));
+           if(vehicles.at(i)->getTurningStatus()){
+              numSectionsNeeded += 1;
+              if(numSectionsNeeded <= yellowLight){
+                turnRight(vehicles[i], turnLane);
+                lane[i].unoccupy();
+                vehicles.at(i) = nullptr;
+                yellowLight--;
+              }
+             else if(lane.at(i+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(i+1)->getVehicleID()){
+                turnRight(vehicles[i], turnLane);
+                lane[i].unoccupy();
+                vehicles.at(i) = nullptr;
+                yellowLight--;
+            }
+            else if(lane.at(halfsize+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(halfsize+1)->getVehicleID()){
+               vehicles.at(halfsize) = vehicles.at(halfsize-1);
+               vehicles.at(i) = nullptr;
+               lane[halfsize].makeOccupied();
+               lane[i].unoccupy();
+               yellowLight--;
+
+            }  
+           }
+           else{
+             std::cout << "enters other else" << std::endl;
+             numSectionsNeeded += 2;
+             std::cout << numSectionsNeeded << std::endl;
+             if(numSectionsNeeded <= yellowLight){
+               vehicles.at(i+1) = vehicles.at(i);
+               vehicles.at(i) = nullptr;
+               lane[i+1].makeOccupied();
+               lane[i].unoccupy();
+               yellowLight--;
+            }
+            else if(lane.at(i+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(i+1)->getVehicleID()){
+               vehicles.at(i+1) = vehicles.at(i);
+               vehicles.at(i) = nullptr;
+               lane[i+1].makeOccupied();
+               lane[i].unoccupy();
+               yellowLight--;
+
+            }
+             else if(lane.at(halfsize+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(halfsize+1)->getVehicleID()){
+               vehicles.at(halfsize) = vehicles.at(i);
+               vehicles.at(i) = nullptr;
+               lane[halfsize].makeOccupied();
+               lane[i].unoccupy();
+               yellowLight--;
+
+            }
+          }
+         }
+        }}
+     }// end of for loop
+
+
+
+
+
+
+
+  }
+//start of red light 
+   else {
+      if(lane.at(numSections-1).isOccupied()){
+          vehicles.at(numSections-1) = nullptr;
+          lane.at(numSections-1).unoccupy();
+      }
+      for(int i = numSections-2; i >= 0; i--){
+         if(!lane.at(i+1).isOccupied()){
+         if(i < halfsize-1 || i >= halfsize){
+           if(vehicles.at(i) != nullptr){
+             std::cout << "in where it is suppose to be 2" << std::endl;
+            // if(i+1 != numSections)
+             vehicles.at(i+1) = vehicles.at(i);
+             vehicles.at(i) = nullptr;
+             lane[i+1].makeOccupied();
+             lane[i].unoccupy();
+           }
+         /*  if(lane.at(1).isOccupied()){
+             VehicleType firstVehicleType = vehicles.at(1)->getVehicleType();
+             VehicleBase* firstVehicle = (vehicles.at(1));
+             std::cout << "before if" << std::endl;
+             if(partialVehicle(firstVehicleType, firstVehicle)){
+              vehicles.at(0) = firstVehicle;
+              (lane.at(0)).makeOccupied();
+              std::cout << "after if in partial part" << std::endl;
+             }
+            }*/
+          }}//end of halfsize if
+         else{
+           
+
+
+         } 
+         } //end of for loop
+
+
+
+
+}
+ 
+  // for partial vehicle
+   if(lane.at(1).isOccupied()){
+             VehicleType firstVehicleType = vehicles.at(1)->getVehicleType();
+             VehicleBase* firstVehicle = (vehicles.at(1));
+             std::cout << "********before if********" << std::endl;
+             std::cout << partialVehicle(firstVehicleType, firstVehicle);
+             if(partialVehicle(firstVehicleType, firstVehicle)){
+              vehicles.at(0) = firstVehicle;
+              (lane.at(0)).makeOccupied();
+              std::cout << "after if in partial part" << std::endl;
+             }
+            } 
+
+
+std::cout << "end of method" << std::endl;
+}//end of move lane method
+
+int Lane::getNumSections(VehicleBase* vehicle){
+ int numSectionsNeeded;
+
+  if(vehicle->getVehicleType() == VehicleType::car){
+    numSectionsNeeded = 2;
+  } else if(vehicle->getVehicleType() == VehicleType::suv){
+    numSectionsNeeded = 3;
+  } else{
+    numSectionsNeeded = 4;
+  } 
+ return numSectionsNeeded;
+}
+
+
+
+
+bool Lane::partialVehicle(VehicleType firstVehicleType, VehicleBase* firstVehicle){
+    bool partialVeh = false;
+    if((firstVehicleType == VehicleType::car) && (vehicles.at(1) != vehicles.at(2))){
+       partialVeh = true;
+     }
+       else if((firstVehicleType == VehicleType::suv) && (vehicles.at(1) != vehicles.at(2)) && (vehicles.at(2) != vehicles.at(3))){
+       partialVeh = true; 
+       }
+       else if((firstVehicleType == VehicleType::truck) && (vehicles.at(1) != vehicles.at(2)) && (vehicles.at(2) != vehicles.at(3)) && (vehicles.at(3) != vehicles.at(4)) ){
+       partialVeh = true;
+       }
+     return partialVeh;
+
+} //end of partialVehicle method
+
+
+
+
+
+
+
+
+
+
+/*void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
    int intersection = halfsize;
   //std::cout << "numsections: " << numSections << std::endl;
   // LightColor::green light moveLane
@@ -93,20 +433,21 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
       //}
       // Moves the other vehicles forward
       else{
-         // 
+         //
+
          if(lane[i] != NULL){
 	   Direction curVehDir = lane[i]->getVehicleDirection();
            Direction curLaneDir = laneDirection;
            if(curVehDir == curLaneDir){ 
 	      std::string vehDir;
               std::string laneDir; 
-               if(curVehDir == (Direction::north)){
-                   vehDir = "north";
-               } else if(curVehDir == (Direction::west)){
+               if(curVehDir == (Direction::west)){
                    vehDir = "west";
+               } else if(curVehDir == (Direction::north)){
+                   vehDir = "north";
                } else if(curVehDir == (Direction::east)){
                    vehDir = "east";
-               } else if(curVehDir == (Direction::south)){
+               } else{
                    vehDir = "south";
                }
                if(curLaneDir == (Direction::north)){
@@ -115,16 +456,19 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
                    laneDir = "west";
                } else if(curLaneDir ==  (Direction::east)){
                    laneDir = "east";
-               } else if(curLaneDir == (Direction::south)){
+               } else{
                    laneDir = "south";
                }
                std::cout << "vehicle direction: " << vehDir <<std::endl;
                std::cout << "lane direction: " << laneDir << std::endl;
             
-            } else{
-              std::cout << "i: " << i << std::endl;
-            }     
+            } //else{
+             // std::cout << "i: " << i << std::endl;
+           // }     
                lane[i]= lane[i-1];
+            }
+	    else{
+              std::cout << "i: " << i << std::endl;
             }
          
       }
@@ -225,6 +569,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
       // }
 
        //if the vehicle is 2 before the intersection, only let car go
+       //
        if(lane[halfsize-2]->isOccupied()){
          VehicleType beforeInterVehicleType = lane[halfsize-2]->getVehicleType();
          if(beforeInterVehicleType == VehicleType::car && lane[halfsize-2] == lane[halfsize-1]){
@@ -267,25 +612,19 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane){
     //}
   }
 }
-
-void Lane::turnRight(Section* turningSection, Lane* turnLane){
-  turnLane->lane[this->halfsize+2] = turningSection;
+*/
+void Lane::turnRight(VehicleBase* vehicle, Lane* turnLane){
+  turnLane->vehicles.at(halfsize+1) = vehicle;
+  ((turnLane->getLaneVector()).at(halfsize+1)).makeOccupied();
 }
-
+/*
 void Lane::intersection(Section* curLaneSection, Lane* sharedLane, int interSection){
    sharedLane->lane[interSection+1] = curLaneSection;
 }
+*/
 
-
-//std::vector<Section> Lane::getLaneVector(){
-//}
-
-std::vector<Section*> Lane::getLaneVector(){
-  return lane;
-}
-
-void Lane::updateVector(std::vector<Section*> updatedVector){
-   lane = updatedVector;
+std::vector<Section> Lane::getLaneVector(){
+   return lane;
 }
 
 
