@@ -12,8 +12,6 @@ using namespace std;
 //constructor: need a number to use for the seed and then a string of the file name
 RandomNumber::RandomNumber(int seed, string file) : initialSeed(seed){
   rng.seed(initialSeed);
- // uniform_real_distribution<double> randomNum(0.0, 1.0);
-  //Dictionary prob(filename); 
   filename = file;
 }
 
@@ -22,7 +20,6 @@ RandomNumber::~RandomNumber() {}
 
 //generates a random number based on the seed
 double RandomNumber::getNum(){
- // rng.seed(initialSeed);
   uniform_real_distribution<double> randomNum(0.0, 1.0);
   return randomNum(rng);
 }
@@ -32,8 +29,6 @@ bool RandomNumber::turnRightCar(){
   Dictionary prob(filename);
   double x = this->getNum();
   double car = prob.getPropRTCar();
-  //double truck = prob.getPropRTTruck();
-  //double suv = prob.getPropRTSUV();
   if (x <= car){
     return true;
   }
@@ -134,8 +129,7 @@ VehicleBase* RandomNumber::whatVehicle(){
       VehicleBase* car = new VehicleBase(VehicleType::car, Direction::south, this->turnRightCar());
       return car;
     }
-    else{
-      //VehicleBase* car(VehicleType::car, Direction::north, this->turnRightCar());      
+    else{     
       return nullptr;
     }
   }
@@ -157,7 +151,6 @@ VehicleBase* RandomNumber::whatVehicle(){
       return suv;
     }
     else{
-     // VehicleBase suv(VehicleType::suv, Direction::north, this->turnRightSUV()); 
       return nullptr;
     }
   }
@@ -178,8 +171,7 @@ VehicleBase* RandomNumber::whatVehicle(){
       VehicleBase* truck = new VehicleBase(VehicleType::truck, Direction::south, this->turnRightTruck());
       return truck; 
     }
-    else{
-     // VehicleBase truck(VehicleType::truck, Direction::north, this->turnRightTruck());  
+    else{ 
      return nullptr;
     }
   }
