@@ -95,7 +95,7 @@ std::vector<VehicleBase*> Lane::getVehicleBase(){
 }
 
 //Moves the lane based off of the color of the light - this method has three
-//main if statements dealing with green, yello, and red.
+//main if statements dealing with green, yellow, and red.
 void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int yellowLight){
 //if light is green, lane moves all sections
   int numIntersection = halfsize;
@@ -106,7 +106,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
           lane.at(numSections-1).unoccupy();
       }
       for(int i = numSections-2; i >= 0; i--){
-
+        //if statement to see if the vehicle is turning. If it is turning, call turnRight
         if((i==numIntersection) && (lane[i].isOccupied() == true)  && (vehicles[i]->getTurningStatus())){
          turnRight(vehicles[i], turnLane);
          lane[i].unoccupy();
@@ -155,9 +155,13 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
              lane[i].unoccupy();
            }
           } //end of greater than halfsize
+          //Else statmement to check if the vehicle will make it through the light in the number of ticks.
         else{
          if(lane.at(i).isOccupied()){
+           //See how many sections the vehicle needs
            int numSectionsNeeded = getNumSections(vehicles.at(i));
+           //If the vehicle is turning, it needs a different number of sections than if it is going straight
+           //if vehicle is turning, test if it will make it through the yellow light before it turns red.
            if(vehicles.at(i)->getTurningStatus()){
               numSectionsNeeded += 1;
               if(numSectionsNeeded <= yellowLight){
@@ -166,12 +170,14 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
                 vehicles.at(i) = nullptr;
                 yellowLight--;
               }
+             //test if the vehicle ID is the same at i and i+1
              else if(lane.at(i+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(i+1)->getVehicleID()){
                 turnRight(vehicles[i], turnLane);
                 lane[i].unoccupy();
                 vehicles.at(i) = nullptr;
                 yellowLight--;
             }
+            //test if the vehicle in the intersection is the vehicle trying to turn
             else if(lane.at(halfsize+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(halfsize+1)->getVehicleID()){
                vehicles.at(halfsize) = vehicles.at(halfsize-1);
                vehicles.at(i) = nullptr;
@@ -181,9 +187,11 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
 
             }
            }
+           //if the car is just going straight, use these statements
            else{
              numSectionsNeeded += 2;
              std::cout << numSectionsNeeded << std::endl;
+             //if the yellow light is longer than the amount of sections the vehicle needs, move forward
              if(numSectionsNeeded <= yellowLight){
                vehicles.at(i+1) = vehicles.at(i);
                vehicles.at(i) = nullptr;
@@ -191,6 +199,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
                lane[i].unoccupy();
                yellowLight--;
             }
+            //check if the occupied section in front is the same vehicle
             else if(lane.at(i+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(i+1)->getVehicleID()){
                vehicles.at(i+1) = vehicles.at(i);
                vehicles.at(i) = nullptr;
@@ -199,6 +208,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
                yellowLight--;
 
             }
+             //check to see if the vehicle in the intersection is the same vehicle
              else if(lane.at(halfsize+1).isOccupied() && vehicles.at(i)->getVehicleID() == vehicles.at(halfsize+1)->getVehicleID()){
                vehicles.at(halfsize) = vehicles.at(i);
                vehicles.at(i) = nullptr;
@@ -218,6 +228,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
           vehicles.at(numSections-1) = nullptr;
           lane.at(numSections-1).unoccupy();
       }
+      //for everything that is passed the intersection, move forward. Otherwise do nothing (stop vehicle)
       for(int i = numSections-2; i >= 0; i--){
          if(!lane.at(i+1).isOccupied()){
          if(i < halfsize-1 || i >= halfsize){
@@ -234,7 +245,7 @@ void Lane::moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int ye
          } //end of for loop
 
 }
-  // for partial vehicle
+  // for partial vehicle - make sure all of the partial vehicle is getting added
    if(lane.at(1).isOccupied()){
              VehicleType firstVehicleType = vehicles.at(1)->getVehicleType();
              VehicleBase* firstVehicle = (vehicles.at(1));
@@ -278,7 +289,7 @@ bool Lane::partialVehicle(VehicleType firstVehicleType, VehicleBase* firstVehicl
 } //end of partialVehicle method
 
 
-//Method to handle turning right
+//Method to handle vehicles turning right 
 void Lane::turnRight(VehicleBase* vehicle, Lane* turnLane){
   turnLane->vehicles.at(halfsize+1) = vehicle;
   ((turnLane->getLaneVector()).at(halfsize+1)).makeOccupied();
