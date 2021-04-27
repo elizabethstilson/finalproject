@@ -22,12 +22,14 @@ class Lane{
   public:
     std::vector<VehicleBase*> vehicles; 
     std::vector<Section> lane;
+    Lane(Lane& copy);
+    Lane& operator=(const Lane& copy);
     Lane(int halfsize, Direction direction, std::vector<VehicleBase*> vehicles);
     ~Lane();
     void assignVehicle(VehicleBase* vehicle);
     void moveLane(LightColor light, Lane* turnLane, Lane* straightLane, int yellow); // turn lane is first section in intersection straightLane is second
-     void turnRight(VehicleBase* vehicle, Lane* turnLane);
-      std::vector<Section> getLaneVector();
+    void turnRight(VehicleBase* vehicle, Lane* turnLane);
+    std::vector<Section> getLaneVector();
     std::string getLaneDirection(); 
     std::vector<VehicleBase*> getVehicleBase();
     bool partialVehicle(VehicleType firstVehicleType, VehicleBase* firstVehicle);
