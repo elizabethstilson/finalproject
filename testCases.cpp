@@ -51,21 +51,22 @@ void run_test(void(*unit_test)(), const char* name) {
 
 // Tests the isOccupied() method in the Section class to ensure the proper boolean is returned 
 // after any modification.
-/*void Section_isOccupied(){
+void Section_isOccupied(){
   Section section;
   assert_that(section.isOccupied() == false, "isOccupied() does notn return the correct boolean upon initial creation");
   
   VehicleBase vehicle1(VehicleType::car, Direction::north, true);
-  section.makeOccupied(vehicle1, Direction::north);
+  section.makeOccupied();
   assert_that(section.isOccupied() == true, "isOccupied() does not return the correct boolean after assigning vehicle");
   
+  //
   Section section2(section);
   assert_that(section2.isOccupied() == true, "isOccupied() does not return the correct boolean after using copy const");
 
   section.unoccupy();
   assert_that(section.isOccupied() == false, "isOccupied() does not return the correct boolean after calling unoccupy()");
 
-}*/
+}
 
 /*void Lane_assignVehicle(){
   Lane testLane(4, Direction::east);
