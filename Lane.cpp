@@ -8,10 +8,8 @@
 // Sets up a lane based on its size and direction
 Lane::Lane(int halfsize, Direction direction, std::vector<VehicleBase*> vehicles){
   this->halfsize = halfsize;
-//  temp = &emptySec;
   laneDirection = direction;
   numSections = halfsize*2 +2;
-  //Section newSection;
   for(int i =0; i < numSections; i++){
    //deciding if section is an intersection 
    if(i == halfsize || i == halfsize+1){
@@ -19,11 +17,11 @@ Lane::Lane(int halfsize, Direction direction, std::vector<VehicleBase*> vehicles
     Section newSection = new Section(true);
     lane.push_back(newSection);
    }
+// if it isn't an inersection, set it to false
    else{
     Section newSection = new Section(false);
     lane.push_back(newSection);
    }
-   //lane.push_back(newSection);
   }
   this->vehicles = vehicles;
 }
