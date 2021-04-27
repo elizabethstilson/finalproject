@@ -111,12 +111,29 @@ void Lane_assignVehicle(){
   VehicleBase* vehicle3 = new VehicleBase(VehicleType::truck, Direction::east, false);
   testLane.assignVehicle(vehicle3);
   int veh3ID = vehicle3.getVehicleID();
-  testLaneVector = testLane.getLaneVector();
-  int testID3 = testLaneVector[0]->getVehicleID();
+  testLaneVeh = testLane.getVehicleBase();
+  int testID3 = testLaneVeh[0]->getVehicleID();
   assert_that(veh3ID != testID3, "the vehicleID recieved from position 0 after adding a new vehicle to an occupied section does not equal what it should");
 
-  // I do not think we can test unoccupying the first section of the lane as of now, but add a test to see if you can add half of a car with the testlane created
+  //We will test whether or not the partial car code will work 
+  testLaneVeh = testLane.getVehicleBase();
+  testLaneVeh.at(0) = nullptr;
+  
+  // Creates a new Lane after removing the vehicle in section 0
+  Lane testLane2(4, Direction::east, testLaneVeh);
+  
+  // add vehicle2 which was created above. 
+  testLane2.assignVehicle(vehicle2);
 
+  testVehicleVector = testLane2.getVehicleBase();
+  
+  // The two test ID variables should be the same as the veh2ID since each section is referencing the same vehicle. 
+  testID1 = testVehicleVector[0]->getVehicleID();
+  testID2 = testVehicleVector[1]->getVehicleID();
+
+  assert_that(veh2ID == testID1, "the vehicle ID recieved from position 0 in the lane vector does not equal what it should for partial vehicle addition");
+  assert_that(veh2ID == testID2, "the vehicleID recieved from position 1 in the lane vector does not equal what it should for partial vehicle addition");
+  
 }
 
 void Lane_moveLane_Green(){
@@ -237,6 +254,62 @@ void Lane_moveLane_Yellow(){
  
  
 }
+
+// Test the method that determines how many sections are needed per vehicle type
+void Lane_getNumSections{
+  std::vector<VehicleBase*> testLaneVeh(10, nullptr);
+  Lane testLane(4, Direction::north, testLaneVeh);
+
+  // Test car
+  VehicleBase* vehicle1 = new VehicleBase(VehicleType::car, Direction::north, false);
+  int numSecV1 = testLane.getNumSecitions(vehicle1);
+  assert_that(numSecV1 == 2, "the num sections returned for the car is incorrect");
+ 
+  // Test SUV
+  VehicleBase* vehicle2 = new VehicleBase(VehicleType::suv, Direction::north, false);
+  int numSecV2 = testLane.getNumSecitions(vehicle1);
+  assert_that(numSecV1 == 3, "the num sections returned for the suv is incorrect");
+
+  // Test truck
+  VehicleBase* vehicle3 = new VehicleBase(VehicleType::truck, Direction::north, false);
+  int numSecV1 = testLane.getNumSecitions(vehicle3);
+  assert_that(numSecV1 == 4, "the num sections returned for the truck is incorrect");
+} 
+
+
+// Tests the method that determines whether or not there is a partial vehicle in position 0 (first section) of the lane
+void Lane_partialVehicle{
+  std::vector<VehicleBase*> testLaneVeh(10, nullptr);
+  Lane testLane(4, Direction::north, testLaneVeh);
+  
+  // Tests method for car
+  VehicleBase* partialCar = new VehicleBase(VehicleType::car, Direction::north, false);
+  (testLane.getVehicleBase()).at(1) = partialCar;
+  bool testCarPartial = testLane.partialVehicle(partialCar->getVehicleType(), partialCar);  
+  assert_that(testCarPartial == true, "the partial car boolean returned is incorrect");
+  
+  // Sets the sections occupied by a car back to nullptr
+  (testLane.getVehicleBase()).at(1) = nullptr;
+  
+  VehicleBase* partialSUV = new VehicleBase(VehicleType::suv, Direction::north, false);
+  (testLane.getVehicleBase()).at(1) = partialSUV;
+  (testLane.getVehicleBase()).at(2) = partialSUV;
+  bool testSUVPartial = testLane.partialVehicle(partialSUV->getVehicleType(), partialSUV);  
+  assert_that(testSUVPartial == true, "the partial suv boolean returned is incorrect");
+
+   // Sets the sections occupied by a suv back to nullptr
+  (testLane.getVehicleBase()).at(1) = nullptr;
+  (testLane.getVehicleBase()).at(2) = nullptr;
+
+  VehicleBase* partialTruck = new VehicleBase(VehicleType::truck, Direction::north, false);
+  (testLane.getVehicleBase()).at(1) = partialTruck;
+  (testLane.getVehicleBase()).at(2) = partialTruck;
+  (testLane.getVehicleBase()).at(3) = partialTruck;
+  bool testTruckPartial = testLane.partialVehicle(partialTruck->getVehicleType(), partialTruck);  
+  assert_that(testTruckPartial == true, "the partial truck boolean returned is incorrect");
+  
+  
+}
 void Lane_turnRight(){
 }
 
@@ -244,6 +317,7 @@ void Lane_turnRight(){
 
 
 */
+
 
 //the random number 
 int main() {
@@ -271,6 +345,10 @@ int main() {
   run_test(Lane_moveLane_Red, "moveLane() properly stops a vehicle at a red light");
  
   run_test(Lane_moveLane_Red2, "moveLane() properly moves a vehicle until it needs to stop");
+  
+  run_test(Lane_getNumSections, "getNumSections() properly returns the correct number of sections per vehicle type");
+ 
+  run_test(Lane_partialVehicle, "partialVehicle() properly returns whether or not a partial vehicle is in the lane");
 */
 }
 
