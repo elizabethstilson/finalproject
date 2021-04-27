@@ -1,4 +1,4 @@
-EXECS = simulation testCases
+EXECS = simulation
 OBJS = simulation.o Animator.o Dictionary.o VehicleBase.o Lane.o RandomNumber.o Section.o
 
 #### use next two lines for Mac
@@ -13,9 +13,6 @@ all: $(EXECS)
 
 simulation: $(OBJS)
 	$(CC) $(CCFLAGS) $^ -o $@
-
-testCases: $(OBJS)
-	$(CC) $(CCFLAGS) testCases.cpp Animator.o Dictionary.o VehicleBase.o Lane.o RandomNumber.o Section.o -o $@
 
 Lane.o: Lane.cpp VehicleBase.cpp Section.cpp *.h
 	$(CC) $(CCFLAGS) -c Lane.cpp VehicleBase.cpp Section.cpp
