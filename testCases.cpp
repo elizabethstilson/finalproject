@@ -120,14 +120,122 @@ void Lane_assignVehicle(){
 }
 
 void Lane_moveLane_Green(){
-   Lane test1(4, Direction::east);
-   
-
+   //create vehicle vectors
+   std::vector<VehicleBases*> vehiclesE;
+   std::vector<VehicleBases*> vehiclesN;
+   std::vector<VehicleBases*> vehiclesS;
+   std::vector<VehicleBases*> vehiclesW;
+   //create VehicleBase object 
+   VehicleBase* v1(VehicleType::car, Direction::east, false);
+   Lane test1(4, Direction::east, vehiclesE);
+   Lane test2(4, Direction::north, vehiclesN);
+   Lane test3(4, Direction::south, vehiclesS);
+   Lane test4(4, Direction::west, vehiclesW);
+ 
+   //assign the vehicle to the lane
+   test1.assignVehicle(v1);
+ 
+   //pointers 
+   Lane *wpntr = &test4;
+   Lane *epntr = &test1;
+   Lane *npntr = &test2;
+   Lane *spntr = &test3;
+ 
+   assert_that(test1.at(0).isOccupied() && test1.at(1).isOccupied(), "the vehicle did not add to the lane vector");
+   //moveLane
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+ 
+   assert_that(test1.at(1).isOccupied() && test1.at(2).isOccupied(), "the vehicle did not move forward");
 
 }
 void Lane_moveLane_Red(){
+ 
+   //create vehicle vectors
+   std::vector<VehicleBases*> vehiclesE;
+   std::vector<VehicleBases*> vehiclesN;
+   std::vector<VehicleBases*> vehiclesS;
+   std::vector<VehicleBases*> vehiclesW;
+   //create VehicleBase object 
+   VehicleBase* v1(VehicleType::truck, Direction::north, false);
+   Lane test1(4, Direction::east, vehiclesE);
+   Lane test2(4, Direction::north, vehiclesN);
+   Lane test3(4, Direction::south, vehiclesS);
+   Lane test4(4, Direction::west, vehiclesW);
+ 
+   //assign the vehicle to the lane
+   test3.assignVehicle(v1);
+ 
+   //pointers 
+   Lane *wpntr = &test4;
+   Lane *epntr = &test1;
+   Lane *npntr = &test2;
+   Lane *spntr = &test3;
+ 
+   assert_that(test3.at(0).isOccupied() && test3.at(1).isOccupied() && test3.at(2).isOccupied() && test3.at(3).isOccupied() , "the vehicle did not add to the lane vector");
+   //moveLane
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+ 
+   assert_that(test3.at(0).isOccupied() && test3.at(1).isOccupied() && test3.at(2).isOccupied() && test3.at(3).isOccupied() && !(test3.at(4).isOccupied()), "the vehicle moved forward");
+ 
 }
+void Lane_moveLane_Red2(){
+ //create vehicle vectors
+   std::vector<VehicleBases*> vehiclesE;
+   std::vector<VehicleBases*> vehiclesN;
+   std::vector<VehicleBases*> vehiclesS;
+   std::vector<VehicleBases*> vehiclesW;
+   //create VehicleBase object 
+   VehicleBase* v1(VehicleType::car, Direction::north, false);
+   Lane test1(4, Direction::east, vehiclesE);
+   Lane test2(4, Direction::north, vehiclesN);
+   Lane test3(4, Direction::south, vehiclesS);
+   Lane test4(4, Direction::west, vehiclesW);
+ 
+   //assign the vehicle to the lane
+   test3.assignVehicle(v1);
+ 
+   //pointers 
+   Lane *wpntr = &test4;
+   Lane *epntr = &test1;
+   Lane *npntr = &test2;
+   Lane *spntr = &test3;
+ 
+   assert_that(test3.at(0).isOccupied() && test3.at(1).isOccupied(), "the vehicle did not add to the lane vector");
+   //moveLane
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+   //moveLane again
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+   //moveLane again
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+   //moveLane again
+   test1.moveLane(LightColor::green, spntr, npntr, 1); //east
+   test2.moveLane(LightColor::red, epntr, wpntr, 1); //north
+   test3.moveLane(LightColor::red, wpntr, epntr, 1); //south
+   test4.moveLane(LightColor::green, npntr, spntr, 1); //west
+   assert_that(test3.at(2).isOccupied() && test3.at(3).isOccupied() && !(test3.at(4).isOccupied()), "the vehicle moved forward");
+} 
+
+
 void Lane_moveLane_Yellow(){
+ 
+ 
+ 
+ 
 }
 void Lane_turnRight(){
 }
@@ -157,6 +265,12 @@ int main() {
   run_test(Lane_getVehicleDirection, "getVehicleDirection() returns the correct direction");
  
   run_test(Lane_assignVehicle, "assignVehicle() properly assigns the correct vehicle to the correct seection");
+ 
+  run_test(Lane_moveLane_Green, "moveLane() properly moves a vehicle forward when the light is green");
+ 
+  run_test(Lane_moveLane_Red, "moveLane() properly stops a vehicle at a red light");
+ 
+  run_test(Lane_moveLane_Red2, "moveLane() properly moves a vehicle until it needs to stop");
 */
 }
 
