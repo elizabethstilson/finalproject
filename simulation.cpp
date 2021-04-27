@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 	  //set the light colors 
           anim.setLightNorthSouth(LightColor::yellow);
           anim.setLightEastWest(LightColor::red);
-	  //move the lanses 
+	  //move the lanes 
           westbound.moveLane(LightColor::red, npntr, spntr, yellowEW-x);
           eastbound.moveLane(LightColor::red, spntr, npntr, yellowEW-x);
           northbound.moveLane(LightColor::yellow, epntr, wpntr, yellowNS-x);
