@@ -371,7 +371,37 @@ void Lane_partialVehicle{
   
   
 }
-void Lane_turnRight(){
+void Lane_turnRight{
+
+  // Creates the start lane with one car at the intersection 
+  std::vector<VehicleBase*> startLaneVehicles(10, nullptr);
+  VehicleBase* turnVehicle = new VehicleBase(VehicleType::car, Direction::east, true);
+  (startLaneVehicles.at(2)) = turnVehicle;
+  (startLaneVehicles.at(3)) = turnVehicle;
+  Lane startLane(4, Direction:east, startLaneVehicles);
+
+  // Creates an empty lane needed in order to call move Lane & pointer
+   std::vector<VehicleBase*> straightLaneVehicles(10, nullptr);
+   Lane straightLane(4, Direction::south, turnLaneVehicles);
+   Lane *straightLanePtr = &straightLane;
+
+  // Creates an empty turn lane & ptr
+  std::vector<VehicleBase*> turnLaneVehicles(10, nullptr);
+  Lane turnLane(4, Direction::south, turnLaneVehicles);
+  Lane *turnLanePtr = &turnLane;
+  
+  // Get ID's for what the vehicle ID should be in the turnLane compared to what it actually is 
+  startLane.moveLane(LightColor::green, turnLanePtr, straightLanePtr);
+  int turnVehicleIDOrg = turnVehicle->getVehicleID();
+
+  VehicleBase* vehInTurnLane = (turnLanePtr->at(6));
+  int vehInTurnLaneID = vehInTurnLane->getVehicleID();
+  
+  VehicleBase* vehInInter = (turnLanePtr->at(5));
+  int vehInInterID = vehInInter->getVehicleID();
+
+  assert_that(turnVehicleIDOrg == vehInTurnLaneID, "the vehicle ID in the first section after the intersection in turn lane is incorrect");
+  assert_that(turnVehicleIDOrg == vehInInterID, ""the vehicle ID in the last section of the intersection in turn lane is incorrect");
 }
 
 
@@ -415,6 +445,6 @@ int main() {
    
   run_test(Lane_moveLane_Yellow2, "moveLane() properly stops a vehicle when it will not make the yellow light");
            
-
+  run_test(Lane_turnRight, "turnRight() properly adds vehicle to turn lane");
 }
 
